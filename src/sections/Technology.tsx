@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
-import { Cpu, Zap, VolumeX, Shield, Droplets, ThermometerSnowflake, Minimize2, Settings2, Activity, PowerOff } from 'lucide-react';
+import { Cpu, Zap, VolumeX, Shield, Droplets, ThermometerSnowflake, Minimize2, Settings2, Activity, PowerOff, Snowflake, Fan, Factory } from 'lucide-react';
 
 export default function Technology() {
   const containerRef = useRef(null);
@@ -57,6 +57,34 @@ export default function Technology() {
                 Heat is transferred directly to the fluid and removed from the system through natural convection or pump-driven circulation. An additional advantage is that this heat can be recovered by water-cooled heat exchangers and reused in district heating projects.
               </p>
             </div>
+          </div>
+
+          {/* Eliminated infrastructure — the brochure's crossed-out icons, as motion */}
+          <div className="flex flex-wrap gap-6 md:gap-10 items-center">
+            {[
+              { icon: <Snowflake size={26} />, label: 'Chiller' },
+              { icon: <Fan size={26} className="animate-[fanStop_3.5s_ease-out_forwards]" />, label: 'Fans' },
+              { icon: <Factory size={26} />, label: 'Cooling Tower' },
+            ].map((e, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 + i * 0.25, duration: 0.6 }}
+                className="relative flex items-center gap-3 border border-white/10 rounded-full px-5 py-2.5 text-slate-400"
+              >
+                {e.icon}
+                <span className="font-mono text-xs tracking-widest uppercase">{e.label}</span>
+                <motion.span
+                  initial={{ scaleX: 0 }}
+                  whileInView={{ scaleX: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.7 + i * 0.25, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  className="absolute left-2 right-2 top-1/2 h-[2px] bg-red-500/80 origin-left -rotate-6 rounded-full"
+                />
+              </motion.div>
+            ))}
           </div>
         </div>
 

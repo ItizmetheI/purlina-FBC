@@ -113,6 +113,8 @@ const CAM_LOOK = [
 const _camPos = new THREE.Vector3();
 const _camLook = new THREE.Vector3();
 
+let _lastScroll = 0;
+
 function CameraRig({ isLoaded }: { isLoaded?: boolean }) {
   const cameraRef = useRef<THREE.PerspectiveCamera>(null);
   const prefersReducedMotion = useMemo(() => {
@@ -150,6 +152,15 @@ function CameraRig({ isLoaded }: { isLoaded?: boolean }) {
     // subtle parallax on top of the blocking
     cameraRef.current.rotation.y -= mouseX * 0.06;
     cameraRef.current.rotation.x += mouseY * 0.04;
+
+    // scroll-velocity lens: fast scrolling widens the FOV slightly
+    const vel = Math.abs(chapterState.scroll - _lastScroll) / Math.max(delta, 0.001);
+    _lastScroll = chapterState.scroll;
+    const targetFov = 45 + Math.min(vel * 30, 6);
+    if (Math.abs(cameraRef.current.fov - targetFov) > 0.02) {
+      cameraRef.current.fov = THREE.MathUtils.lerp(cameraRef.current.fov, targetFov, delta * 4);
+      cameraRef.current.updateProjectionMatrix();
+    }
   });
 
   return <PerspectiveCamera ref={cameraRef} makeDefault position={[0, 8, 18]} fov={45} />;
@@ -768,15 +779,24 @@ function HeroCenterpiece({ quality }: { quality: 'high' | 'low' }) {
     groupRef.current.visible = isVisible;
     if (!isVisible) return;
     
-    groupRef.current.position.y = 6.2 + (prefersReducedMotion ? 0 : Math.sin(time * 0.5) * 0.3);
+    // THE LIFT — the brochure cover motif in motion: the blade rises out of
+    // the fluid (surface y=4) as the visitor scrolls the first chapter.
+    let liftT = 0;
+    if (chapterState.chapter === 0) liftT = chapterState.chapterProgress;
+    else liftT = 1;
+    const eased = liftT * liftT * (3 - 2 * liftT);
+    const baseY = 4.55 + eased * 1.75; // half-submerged → fully lifted
+    groupRef.current.position.y = baseY + (prefersReducedMotion ? 0 : Math.sin(time * 0.5) * 0.25);
     groupRef.current.rotation.x = prefersReducedMotion ? 0 : Math.sin(time * 0.3) * 0.05;
     groupRef.current.rotation.y = 0.35 + (prefersReducedMotion ? 0 : Math.cos(time * 0.2) * 0.05);
     
     if (dropRef.current) {
       let impactCount = 0;
+      const dripRate = 2 + eased * 3.5;
       drops.forEach((d, i) => {
-        d.y -= delta * 3;
-        if (d.y < -2.2) { 
+        d.y -= delta * dripRate;
+        const surfaceLocal = 4.0 - baseY;
+        if (d.y < surfaceLocal) { 
            d.y = -0.2;
            d.x = (Math.random() - 0.5) * 1.5;
            d.z = (Math.random() - 0.5) * 0.4;
@@ -786,8 +806,8 @@ function HeroCenterpiece({ quality }: { quality: 'high' | 'low' }) {
         
         let scale = 1;
         if (d.y > -0.5) scale = (-d.y - 0.2) * 2;
-        if (d.y < -2.0) {
-          scale = (d.y + 2.2) * 5;
+        if (d.y < surfaceLocal + 0.2) {
+          scale = Math.max(0.01, (d.y - surfaceLocal)) * 5;
           impactCount++;
         }
         dummy.scale.setScalar(Math.max(0.01, scale));
@@ -796,6 +816,9 @@ function HeroCenterpiece({ quality }: { quality: 'high' | 'low' }) {
       });
       dropRef.current.instanceMatrix.needsUpdate = true;
       
+      // keep the impact disc pinned to the world fluid surface (y=4)
+      const disc = groupRef.current.children[groupRef.current.children.length - 1];
+      if (disc) disc.position.y = 4.0 - baseY;
       if (discMatRef.current) {
         discMatRef.current.opacity = THREE.MathUtils.lerp(
           discMatRef.current.opacity, 

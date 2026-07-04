@@ -56,3 +56,14 @@
     linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
 }
+
+@keyframes hudFade {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fanStop {
+  0% { transform: rotate(0deg); }
+  70% { transform: rotate(680deg); }
+  100% { transform: rotate(720deg); }
+}

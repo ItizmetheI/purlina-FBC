@@ -18,6 +18,8 @@ import Footer from './sections/Footer';
 import Scene from './canvas/Scene';
 import SmoothScroll from './components/SmoothScroll';
 import CustomCursor from './components/CustomCursor';
+import SystemHUD from './components/SystemHUD';
+import ThesisMoment from './sections/ThesisMoment';
 import { useChapterEngine } from './utils/chapterEngine';
 
 function CinematicLoader() {
@@ -94,6 +96,7 @@ export default function App() {
   return (
     <SmoothScroll>
       <CustomCursor />
+      <SystemHUD />
       <EngineMount />
       <main className="relative min-h-screen bg-[#020617] bg-grid selection:bg-brand-cyan/30 font-sans">
                 <AnimatePresence>
@@ -119,28 +122,29 @@ export default function App() {
             <div data-chapter="1">
               <EvolutionQuote />
             </div>
-            <div data-chapter="2">
+            <div data-chapter="2" id="toc-vision">
               <TableOfContents />
               <Vision />
             </div>
-            <div data-chapter="3">
+            <div data-chapter="3" id="toc-thermal">
               <ThermalManagement />
+              <ThesisMoment />
               <DataCenterGrowth />
             </div>
-            <div data-chapter="4">
+            <div data-chapter="4" id="toc-technology">
               <Technology />
             </div>
-            <div data-chapter="5">
+            <div data-chapter="5" id="toc-core">
               <ThermalEnvironment />
             </div>
-            <div data-chapter="6">
+            <div data-chapter="6" id="toc-series">
               <TechnicalSpecs />
               <ProductSeries />
             </div>
             <div data-chapter="7">
               <HandlingPrecautions />
             </div>
-            <div data-chapter="8">
+            <div data-chapter="8" id="toc-advantages">
               <Efficiency />
               <Advantages />
               <Applications />
