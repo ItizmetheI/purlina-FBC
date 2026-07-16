@@ -1,8 +1,11 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { Cpu, Zap, VolumeX, Shield, Droplets, ThermometerSnowflake, Minimize2, Settings2, Activity, PowerOff, Snowflake, Fan, Factory } from 'lucide-react';
+import { useLang } from '../lib/lang';
+import SectionHeader from '../components/SectionHeader';
 
 export default function Technology() {
+  const { t } = useLang();
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -25,94 +28,91 @@ export default function Technology() {
   ];
 
   return (
-    <section ref={containerRef} className="relative h-[600vh] z-10 pointer-events-none">
-      <div className="sticky top-0 h-screen flex flex-col justify-center w-full pointer-events-auto overflow-hidden" data-cursor="drag">
-        
-        <div className="max-w-7xl mx-auto w-full mb-16 flex flex-col gap-12 px-4 md:px-12">
-          
-          <div className="flex flex-col md:flex-row justify-between border-b border-white/10 pb-8 gap-8">
-             <motion.h3 className="text-3xl md:text-5xl text-blue-500 font-display font-bold italic">
-               Immersion Cooling Teknolojisi
-             </motion.h3>
-             <motion.h3 className="text-3xl md:text-5xl text-white font-display font-bold md:text-right">
-               Immersion Cooling Technology
-             </motion.h3>
-          </div>
+    <section ref={containerRef} className="relative h-[350vh] z-10 pointer-events-none">
+      <div className="sticky top-0 h-screen flex flex-col justify-center gap-10 w-full pointer-events-auto overflow-hidden">
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24">
-            <div className="flex flex-col gap-6">
-              <p className="text-lg text-slate-300 font-light leading-relaxed italic">
-                Immersion cooling mimarisinde elektronik bileşenler doğrudan dielectric sıvı içine daldırılarak çalıştırılır. Bu sıvı elektriksel olarak iletken değildir ve yüksek termal kapasiteye sahiptir.
-              </p>
-              <p className="text-lg text-slate-300 font-light leading-relaxed italic">
-                Isı doğrudan sıvıya aktarılır ve doğal konveksiyon veya pompa sirkülasyonu ile sistemden uzaklaştırılır. Ek bir avantajı da, bu ısının su soğutmalı ısı eşanjörleri tarafından geri kazanılıp bölgesel ısıtma projelerinde yeniden kullanılabilmesidir.
-              </p>
-            </div>
-            
-            <div className="flex flex-col gap-6">
-              <p className="text-lg text-white font-light leading-relaxed">
-                In immersion cooling architecture, electronic components operate while directly immersed in a dielectric fluid. This fluid is electrically non-conductive and has a high thermal capacity.
-              </p>
-              <p className="text-lg text-white font-light leading-relaxed">
-                Heat is transferred directly to the fluid and removed from the system through natural convection or pump-driven circulation. An additional advantage is that this heat can be recovered by water-cooled heat exchangers and reused in district heating projects.
-              </p>
-            </div>
+        {/* compact header — the whole beat must fit one pinned viewport */}
+        <div className="max-w-7xl mx-auto w-full px-4 md:px-12 lg:pl-32">
+          <div className="flex items-baseline gap-4 mb-3">
+            <span className="kicker">05</span>
+            <span className="kicker text-slate-500">/</span>
+            <span className="kicker">{t('ÇÖZÜM — DALDIRMA', 'THE SOLUTION — IMMERSION')}</span>
           </div>
-
-          {/* Eliminated infrastructure — the brochure's crossed-out icons, as motion */}
-          <div className="flex flex-wrap gap-6 md:gap-10 items-center">
-            {[
-              { icon: <Snowflake size={26} />, label: 'Chiller' },
-              { icon: <Fan size={26} className="animate-[fanStop_3.5s_ease-out_forwards]" />, label: 'Fans' },
-              { icon: <Factory size={26} />, label: 'Cooling Tower' },
-            ].map((e, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 + i * 0.25, duration: 0.6 }}
-                className="relative flex items-center gap-3 border border-white/10 rounded-full px-5 py-2.5 text-slate-400"
-              >
-                {e.icon}
-                <span className="font-mono text-xs tracking-widest uppercase">{e.label}</span>
-                <motion.span
-                  initial={{ scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
+          <div className="flex flex-wrap items-center gap-x-10 gap-y-4">
+            <h3 className="text-3xl md:text-5xl text-white font-display font-bold">
+              {t('Immersion Cooling Teknolojisi', 'Immersion Cooling Technology')}
+            </h3>
+            {/* the infrastructure this technology deletes */}
+            <div className="flex flex-wrap gap-4 items-center">
+              {[
+                { icon: <Snowflake size={20} />, label: 'Chiller' },
+                { icon: <Fan size={20} className="animate-[fanStop_3.5s_ease-out_forwards]" />, label: 'Fans' },
+                { icon: <Factory size={20} />, label: 'Cooling Tower' },
+              ].map((e, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: 0.7 + i * 0.25, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                  className="absolute left-2 right-2 top-1/2 h-[2px] bg-red-500/80 origin-left -rotate-6 rounded-full"
-                />
-              </motion.div>
-            ))}
+                  transition={{ delay: 0.2 + i * 0.25, duration: 0.6 }}
+                  className="relative flex items-center gap-2.5 border border-white/10 rounded-full px-4 py-2 text-slate-400"
+                >
+                  {e.icon}
+                  <span className="font-mono text-[10px] tracking-widest uppercase">{e.label}</span>
+                  <motion.span
+                    initial={{ scaleX: 0 }}
+                    whileInView={{ scaleX: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.7 + i * 0.25, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    className="absolute left-2 right-2 top-1/2 h-[2px] bg-red-500/80 origin-left -rotate-6 rounded-full"
+                  />
+                </motion.div>
+              ))}
+            </div>
           </div>
+          <div className="rule mt-6" />
         </div>
 
-        <motion.div style={{ x }} className="flex gap-8 cursor-grab active:cursor-grabbing w-max pb-8 px-4 md:px-12 lg:pl-[max(3rem,calc((100vw-80rem)/2))] lg:pr-[max(3rem,calc((100vw-80rem)/2))]">
+        {/* the film strip: intro leads, benefits follow */}
+        <motion.div style={{ x }} className="flex gap-8 w-max px-4 md:px-12 lg:pl-32">
+          <div className="w-[80vw] md:w-[520px] flex-shrink-0 flex flex-col justify-center gap-5 pr-8">
+            <p className="text-lg md:text-xl text-white font-light leading-relaxed">
+              {t(
+                'Immersion cooling mimarisinde elektronik bileşenler doğrudan dielectric sıvı içine daldırılarak çalıştırılır. Bu sıvı elektriksel olarak iletken değildir ve yüksek termal kapasiteye sahiptir.',
+                'In immersion cooling architecture, electronic components operate while directly immersed in a dielectric fluid. This fluid is electrically non-conductive and has a high thermal capacity.'
+              )}
+            </p>
+            <p className="text-base md:text-lg text-slate-300 font-light leading-relaxed">
+              {t(
+                'Isı doğrudan sıvıya aktarılır ve doğal konveksiyon veya pompa sirkülasyonu ile sistemden uzaklaştırılır. Bu ısı geri kazanılıp bölgesel ısıtma projelerinde yeniden kullanılabilir.',
+                'Heat is transferred directly to the fluid and removed through natural convection or pump-driven circulation — and can be recovered and reused in district heating projects.'
+              )}
+            </p>
+            <div className="kicker mt-2">{t('KAYDIRMAYA DEVAM ET', 'KEEP SCROLLING')} →</div>
+          </div>
+
           {benefits.map((benefit, i) => (
-            <div 
-              key={i} 
-              className="w-[80vw] md:w-[450px] flex-shrink-0 group relative p-10 bg-white/5 border border-white/10 rounded-[2rem] overflow-hidden hover:border-blue-500/50 hover:bg-slate-900/60 transition-all duration-500 flex flex-col"
+            <div
+              key={i}
+              className="w-[70vw] md:w-[380px] h-[360px] flex-shrink-0 group relative p-8 panel overflow-hidden hover:border-brand-cyan/50 hover:bg-slate-900/60 transition-all duration-500 flex flex-col"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl"></div>
-              
               <div className="relative z-10 flex flex-col h-full">
-                <div className="mb-8 p-5 bg-black/40 border border-white/10 rounded-2xl inline-block text-blue-400 self-start shadow-[0_0_15px_rgba(59,130,246,0.2)]">
-                  {benefit.icon}
+                <div className="flex items-start justify-between">
+                  <div className="p-4 bg-black/40 border border-white/10 rounded-lg inline-block text-brand-cyan self-start">
+                    {benefit.icon}
+                  </div>
+                  <span className="font-mono text-xs text-slate-600">{String(i + 1).padStart(2, '0')} / {String(benefits.length).padStart(2, '0')}</span>
                 </div>
-                
-                <h4 className="text-2xl font-display font-light text-blue-500 italic mb-2">{benefit.titleTr}</h4>
-                {benefit.descTr && <p className="text-slate-400 text-base leading-relaxed italic mb-6 font-light">{benefit.descTr}</p>}
 
-                <div className="w-12 h-[1px] bg-white/20 mb-6 mt-auto"></div>
-
-                <h3 className="text-2xl font-display font-bold text-white mb-2">{benefit.title}</h3>
-                {benefit.desc && <p className="text-slate-300 text-base leading-relaxed font-light">{benefit.desc}</p>}
+                <h3 className="text-2xl font-display font-bold text-white mb-2 mt-auto">{t(benefit.titleTr, benefit.title)}</h3>
+                {(benefit.desc || benefit.descTr) && (
+                  <p className="text-slate-300 text-base leading-relaxed font-light">{t(benefit.descTr, benefit.desc)}</p>
+                )}
               </div>
             </div>
           ))}
         </motion.div>
-        
+
       </div>
     </section>
   );

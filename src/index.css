@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
 @import "tailwindcss";
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
@@ -13,18 +13,28 @@
   body {
     @apply bg-[#020617] text-slate-300 antialiased overflow-x-hidden;
   }
-  
+
   ::selection {
-    @apply bg-blue-500/30 text-white;
+    @apply bg-brand-cyan/30 text-white;
   }
-  
+
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display tracking-tight text-white drop-shadow-md;
+    @apply font-display tracking-tight text-white;
   }
-  
-  p, li, span {
-    @apply drop-shadow-sm;
-  }
+}
+
+/* ── the one design language ─────────────────────────────────────── */
+/* mono kicker above every section headline */
+.kicker {
+  @apply font-mono text-[11px] tracking-[0.35em] uppercase text-brand-cyan;
+}
+/* hairline rule that fades out to the right */
+.rule {
+  @apply h-px w-full bg-gradient-to-r from-white/25 via-white/10 to-transparent;
+}
+/* content surface: hairline top rule instead of a floating glass card */
+.panel {
+  @apply bg-white/[0.03] border-t border-white/15;
 }
 
 /* Custom Scrollbar for a sleek look */

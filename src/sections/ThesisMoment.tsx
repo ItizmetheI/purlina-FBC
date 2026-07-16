@@ -1,8 +1,9 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { useLang } from '../lib/lang';
 
 // The brochure's thesis (p6), verbatim, as the film's moment of silence.
-const TR_WORDS = 'Bu bir soğutma sıvısı değildir; işlemcilerin çalıştığı kararlı ortamdır.'.split(' ');
+const TR_LINE = 'Bu bir soğutma sıvısı değildir; işlemcilerin çalıştığı kararlı ortamdır.';
 const EN_LINE = 'This is not a cooling fluid; it is the stable environment in which processors operate.';
 
 function Word({ word, index, total, progress }: { word: string; index: number; total: number; progress: any }) {
@@ -18,6 +19,9 @@ function Word({ word, index, total, progress }: { word: string; index: number; t
 }
 
 export default function ThesisMoment() {
+  const { t } = useLang();
+  const words = t(TR_LINE, EN_LINE).split(' ');
+  const secondary = t(EN_LINE, TR_LINE);
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -43,15 +47,15 @@ export default function ThesisMoment() {
 
         <div className="relative max-w-5xl px-6 md:px-12 text-center">
           <h2 className="font-display font-bold text-3xl md:text-5xl lg:text-6xl leading-[1.15] text-white">
-            {TR_WORDS.map((w, i) => (
-              <Word key={i} word={w} index={i} total={TR_WORDS.length} progress={scrollYProgress} />
+            {words.map((w, i) => (
+              <Word key={`${w}-${i}`} word={w} index={i} total={words.length} progress={scrollYProgress} />
             ))}
           </h2>
 
           <motion.div className="h-[1px] bg-gradient-to-r from-transparent via-brand-cyan/60 to-transparent mx-auto mt-10 mb-8" style={{ width: ruleWidth }} />
 
-          <motion.p style={{ opacity: enOpacity }} className="text-lg md:text-2xl text-brand-cyan/90 font-light italic leading-relaxed">
-            {EN_LINE}
+          <motion.p style={{ opacity: enOpacity }} className="text-lg md:text-2xl text-brand-cyan/90 font-light leading-relaxed">
+            {secondary}
           </motion.p>
         </div>
       </div>

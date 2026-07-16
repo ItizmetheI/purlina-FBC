@@ -1,20 +1,26 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# PURLINA MATRIX CORE
 
-# Run and deploy your AI Studio app
+Marketing site for PURLINA MATRIX CORE — a single-phase dielectric immersion
+cooling fluid by ALKİM Petrokimya — built as one continuous scroll-driven dive
+into an immersion tank (React 19, Three.js via react-three-fiber, Lenis,
+Tailwind v4, Vite).
 
-This contains everything you need to run your app locally.
+## Run
 
-View your app in AI Studio: https://ai.studio/apps/c1be257a-39fd-471a-ba74-5067031e61c7
+```bash
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # production build to dist/
+npm run lint     # type-check
+```
 
-## Run Locally
+## Structure
 
-**Prerequisites:**  Node.js
+- `src/utils/dive.ts` — the spine: scroll → depth (0–40 m) → act. Single source
+  of truth for camera, HUD, and scene staging.
+- `src/canvas/` — the WebGL tank: environment, set pieces, camera rig.
+- `src/sections/` — DOM content, faithful to the MATRIXCORE-v4 brochure.
+- `src/lib/lang.tsx` — TR/EN language toggle.
 
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Content (specs, tables, safety text) mirrors the printed brochure exactly —
+do not edit values without confirmation from ALKİM.

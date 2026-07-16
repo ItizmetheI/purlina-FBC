@@ -1,10 +1,10 @@
-import React, { useRef, useMemo } from 'react';
+﻿import React, { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
-import { chapterState } from '../utils/chapterEngine';
+import { dive } from '../utils/dive';
 
-export default function ExplodingBlade({ quality }: { quality: 'high' | 'low' }) {
+export default function ExplodingBlade({ quality, position = [0, 0, 0] }: { quality: 'high' | 'low'; position?: [number, number, number] }) {
   const groupRef = useRef<THREE.Group>(null);
   const prefersReducedMotion = useMemo(() => {
     if (typeof window !== 'undefined') {
@@ -21,25 +21,24 @@ export default function ExplodingBlade({ quality }: { quality: 'high' | 'low' })
   const labelRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useFrame((sys, delta) => {
-    if (document.hidden) return;
     if (!groupRef.current) return;
     
-    // Only visible in chapters 3, 4, 5, 6 to save performance, but explosion happens in chapter 5
-    const isVisible = chapterState.chapter >= 3 && chapterState.chapter <= 6;
+    // Staged at the CONTACT depth; explosion beat runs through act 5
+    const isVisible = dive.act >= 4 && dive.act <= 6;
     groupRef.current.visible = isVisible;
     if (!isVisible) return;
 
     let targetExplosion = 0;
-    if (chapterState.chapter === 5) {
-      if (chapterState.chapterProgress <= 0.3) {
-        targetExplosion = chapterState.chapterProgress / 0.3;
-      } else if (chapterState.chapterProgress <= 0.8) {
+    if (dive.act === 5) {
+      if (dive.actProgress <= 0.3) {
+        targetExplosion = dive.actProgress / 0.3;
+      } else if (dive.actProgress <= 0.8) {
         targetExplosion = 1;
       } else {
-        targetExplosion = 1 - ((chapterState.chapterProgress - 0.8) / 0.2) * 0.5;
+        targetExplosion = 1 - ((dive.actProgress - 0.8) / 0.2) * 0.5;
       }
-    } else if (chapterState.chapter > 5) {
-      targetExplosion = 0; 
+    } else if (dive.act > 5) {
+      targetExplosion = 0;
     }
     
     explosionRef.current = THREE.MathUtils.lerp(
@@ -66,13 +65,13 @@ export default function ExplodingBlade({ quality }: { quality: 'high' | 'low' })
     });
 
     const time = sys.clock.getElapsedTime();
-    groupRef.current.position.y = prefersReducedMotion ? 0 : Math.sin(time * 0.5) * 0.2;
+    groupRef.current.position.y = position[1] + (prefersReducedMotion ? 0 : Math.sin(time * 0.5) * 0.2);
     groupRef.current.rotation.x = Math.PI / 6 + (prefersReducedMotion ? 0 : Math.sin(time * 0.3) * 0.05);
     groupRef.current.rotation.y = -Math.PI / 4 + (prefersReducedMotion ? 0 : Math.cos(time * 0.2) * 0.05);
   });
 
   const Label = ({ text, index }: { text: string, index: number }) => (
-    <Html center position={[2.9, 0, 0]} distanceFactor={10} className="pointer-events-none">
+    <Html center position={[-2.9, 0, 0]} distanceFactor={10} className="pointer-events-none hidden md:block">
       <div 
         ref={el => { labelRefs.current[index] = el; }}
         className="text-brand-cyan font-mono text-xs tracking-widest uppercase bg-[#020617]/80 px-3 py-1 border border-brand-cyan/30 rounded whitespace-nowrap transition-opacity duration-500" 
@@ -102,7 +101,7 @@ export default function ExplodingBlade({ quality }: { quality: 'high' | 'low' })
   };
 
   return (
-    <group position={[3, 0, 2]} ref={groupRef} scale={quality === 'low' ? 0.7 : 1}>
+    <group position={position} ref={groupRef} scale={quality === 'low' ? 0.7 : 1}>
       <group ref={gpuRef}>
         <mesh castShadow receiveShadow>
           <boxGeometry args={[4, 0.2, 4]} />

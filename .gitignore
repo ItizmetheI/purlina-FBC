@@ -6,3 +6,12 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# render artifacts (regenerate with blender/build_world.py)
+blender/out/
+blender/render.log
+blender/render.err
+higgsfield/*.json
+higgsfield/*.err
+higgsfield/*.png
+higgsfield/*.mp4

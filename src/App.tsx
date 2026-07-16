@@ -16,44 +16,50 @@ import Advantages from './sections/Advantages';
 import Applications from './sections/Applications';
 import Footer from './sections/Footer';
 import Scene from './canvas/Scene';
+import VideoWorld from './canvas/VideoWorld';
 import SmoothScroll from './components/SmoothScroll';
 import CustomCursor from './components/CustomCursor';
 import SystemHUD from './components/SystemHUD';
 import ThesisMoment from './sections/ThesisMoment';
-import { useChapterEngine } from './utils/chapterEngine';
+import { useDiveEngine } from './utils/dive';
+import { LangProvider } from './lib/lang';
+import Header from './components/Header';
+import ActRail from './components/ActRail';
+import Cine from './components/Cine';
+import BreachFlash from './components/BreachFlash';
 
 function CinematicLoader() {
   return (
-    <motion.div 
+    <motion.div
       className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#020617] bg-grid"
-      exit={{ opacity: 0, y: -20, filter: "blur(10px)" }}
+      exit={{ opacity: 0, y: -20, filter: 'blur(10px)' }}
       transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
     >
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1, ease: "easeOut" }}
+        transition={{ duration: 1, ease: 'easeOut' }}
         className="flex flex-col items-center"
       >
         <div className="w-16 h-16 relative mb-8">
-          <motion.div 
+          <motion.div
             animate={{ rotate: 360 }}
-            transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+            transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
             className="absolute inset-0 border-t-2 border-brand-cyan rounded-full"
           />
-          <motion.div 
+          <motion.div
             animate={{ rotate: -360 }}
-            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+            transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
             className="absolute inset-2 border-b-2 border-blue-500 rounded-full opacity-50"
           />
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
           </div>
         </div>
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
+          transition={{ delay: 0.3 }}
           className="text-brand-cyan font-mono text-xs tracking-[0.5em] uppercase"
         >
           Initializing Matrix Core
@@ -61,7 +67,7 @@ function CinematicLoader() {
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: 200 }}
-          transition={{ delay: 0.8, duration: 1.2, ease: "easeInOut" }}
+          transition={{ delay: 0.4, duration: 0.8, ease: 'easeInOut' }}
           className="h-[1px] bg-gradient-to-r from-transparent via-brand-cyan to-transparent mt-4"
         />
       </motion.div>
@@ -70,7 +76,7 @@ function CinematicLoader() {
 }
 
 function EngineMount() {
-  useChapterEngine();
+  useDiveEngine();
   return null;
 }
 
@@ -78,9 +84,21 @@ export default function App() {
   const [minTimePassed, setMinTimePassed] = useState(false);
   const [canvasReady, setCanvasReady] = useState(false);
   const [appState, setAppState] = useState<'loading' | 'ready' | 'arrived'>('loading');
+  // pre-rendered world if the encodes exist, WebGL world otherwise
+  const [world, setWorld] = useState<'video' | 'webgl' | null>(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => setMinTimePassed(true), 2000);
+    fetch('/world/leg_1.mp4', { method: 'HEAD' })
+      // dev servers SPA-fallback missing files to index.html — demand real video
+      .then((r) => setWorld(r.ok && (r.headers.get('content-type') || '').includes('video') ? 'video' : 'webgl'))
+      .catch(() => setWorld('webgl'));
+  }, []);
+
+  useEffect(() => {
+    // the dive always starts at the surface
+    history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
+    const timer = setTimeout(() => setMinTimePassed(true), 800);
     return () => clearTimeout(timer);
   }, []);
 
@@ -94,17 +112,24 @@ export default function App() {
   const loading = appState === 'loading';
 
   return (
+    <LangProvider>
     <SmoothScroll>
       <CustomCursor />
+      <Header />
+      <ActRail />
       <SystemHUD />
+      <BreachFlash />
       <EngineMount />
       <main className="relative min-h-screen bg-[#020617] bg-grid selection:bg-brand-cyan/30 font-sans">
-                <AnimatePresence>
+        <AnimatePresence>
           {loading && <CinematicLoader />}
         </AnimatePresence>
-        
+
+        {/* Cockpit bezel — the whole experience sits inside an instrument frame */}
+        <div className="fixed inset-2 md:inset-3 pointer-events-none z-[55] border border-white/10 rounded-2xl" />
+
         {/* Cinematic Grain Overlay */}
-        <div 
+        <div
           className="fixed inset-0 pointer-events-none z-[60] opacity-[0.04]"
           style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
@@ -114,47 +139,59 @@ export default function App() {
         />
 
         <div className={`transition-opacity duration-1000 ${loading ? 'opacity-0' : 'opacity-100'}`}>
-          <Scene onCreated={() => setCanvasReady(true)} isLoaded={appState === 'arrived'} />
+          {world === 'video' && <VideoWorld onReady={() => setCanvasReady(true)} />}
+          {world === 'webgl' && <Scene onCreated={() => setCanvasReady(true)} isLoaded={appState === 'arrived'} />}
           <div className="relative z-10 flex flex-col pointer-events-none">
-            <div data-chapter="0">
+            <div data-act="0">
               <Hero />
             </div>
-            <div data-chapter="1">
-              <EvolutionQuote />
+            <div data-act="1">
+              <Cine><EvolutionQuote /></Cine>
+              {/* travel beat — the scene alone as we cross the surface */}
+              <div className="h-[70vh]" aria-hidden />
             </div>
-            <div data-chapter="2" id="toc-vision">
-              <TableOfContents />
-              <Vision />
+            <div data-act="2" id="toc-vision">
+              <Cine><TableOfContents /></Cine>
+              <div className="h-[60vh]" aria-hidden />
+              <Cine><Vision /></Cine>
+              <div className="h-[50vh]" aria-hidden />
             </div>
-            <div data-chapter="3" id="toc-thermal">
+            <div data-act="3" id="toc-thermal">
               <ThermalManagement />
               <ThesisMoment />
-              <DataCenterGrowth />
+              <Cine><DataCenterGrowth /></Cine>
+              {/* travel beat — drifting along the burning racks */}
+              <div className="h-[70vh]" aria-hidden />
             </div>
-            <div data-chapter="4" id="toc-technology">
+            <div data-act="4" id="toc-technology">
               <Technology />
             </div>
-            <div data-chapter="5" id="toc-core">
+            <div data-act="5" id="toc-core">
+              {/* travel beat — approaching the blade */}
+              <div className="h-[50vh]" aria-hidden />
               <ThermalEnvironment />
             </div>
-            <div data-chapter="6" id="toc-series">
-              <TechnicalSpecs />
-              <ProductSeries />
+            <div data-act="6" id="toc-series">
+              <Cine><TechnicalSpecs /></Cine>
+              <div className="h-[50vh]" aria-hidden />
+              <Cine><ProductSeries /></Cine>
             </div>
-            <div data-chapter="7">
-              <HandlingPrecautions />
+            <div data-act="7">
+              <Cine><HandlingPrecautions /></Cine>
             </div>
-            <div data-chapter="8" id="toc-advantages">
-              <Efficiency />
-              <Advantages />
-              <Applications />
+            <div data-act="8" id="toc-advantages">
+              <div className="h-[50vh]" aria-hidden />
+              <Cine><Efficiency /></Cine>
+              <Cine><Advantages /></Cine>
+              <Cine><Applications /></Cine>
             </div>
-            <div data-chapter="9">
+            <div data-act="9">
               <Footer />
             </div>
           </div>
         </div>
       </main>
     </SmoothScroll>
+    </LangProvider>
   );
 }

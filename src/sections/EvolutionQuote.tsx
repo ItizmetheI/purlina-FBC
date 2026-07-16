@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useLang } from '../lib/lang';
 
 export default function EvolutionQuote() {
   const [scanMode, setScanMode] = useState(false);
+  const { t } = useLang();
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
@@ -28,18 +30,8 @@ export default function EvolutionQuote() {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 1 }}
         >
-          <h2 className="text-4xl md:text-6xl font-display font-medium text-white mb-2 leading-tight">Soğutmanın Değil,</h2>
-          <h2 className="text-4xl md:text-6xl font-display font-medium text-white leading-tight">Evrimin Kararlı Ortamı</h2>
-        </motion.div>
-        
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1, delay: 0.3 }}
-        >
-          <h3 className="text-2xl md:text-4xl font-display font-light text-slate-300 italic mb-2">Not Just Cooling,</h3>
-          <h3 className="text-2xl md:text-4xl font-display font-light text-slate-300 italic">But a Stable Environment for Evolution</h3>
+          <h2 className="text-4xl md:text-6xl font-display font-medium text-white mb-2 leading-tight">{t('Soğutmanın Değil,', 'Not Just Cooling,')}</h2>
+          <h2 className="text-4xl md:text-6xl font-display font-medium text-white leading-tight">{t('Evrimin Kararlı Ortamı', 'But a Stable Environment for Evolution')}</h2>
         </motion.div>
 
         {/* Annotated Pod Diagram */}
@@ -195,12 +187,12 @@ export default function EvolutionQuote() {
           </motion.div>
           {/* Cold Water */}
           <motion.div variants={labelVariants} className="absolute left-[85.7%] top-[62.5%] -translate-y-1/2 translate-x-[10%] text-left hidden md:block">
-            <span className="font-mono text-blue-400 text-xs md:text-sm tracking-widest uppercase whitespace-nowrap">Cold Water Inlet</span>
+            <span className="font-mono text-brand-cyan text-xs md:text-sm tracking-widest uppercase whitespace-nowrap">Cold Water Inlet</span>
           </motion.div>
 
           {/* Floating Tag */}
-          <motion.div variants={labelVariants} className="absolute bottom-4 right-1/2 translate-x-1/2 md:translate-x-0 md:bottom-12 md:right-1/4 px-4 py-1.5 bg-blue-500/10 border border-blue-500/30 rounded-full backdrop-blur-md">
-            <span className="font-display font-bold text-blue-400 text-xs tracking-widest">PURLINA MATRIX CORE</span>
+          <motion.div variants={labelVariants} className="absolute bottom-4 right-1/2 translate-x-1/2 md:translate-x-0 md:bottom-12 md:right-1/4 px-4 py-1.5 bg-brand-cyan/10 border border-brand-cyan/30 rounded-full backdrop-blur-md">
+            <span className="font-display font-bold text-brand-cyan text-xs tracking-widest">PURLINA MATRIX CORE</span>
           </motion.div>
 
         </motion.div>
