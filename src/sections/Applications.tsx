@@ -104,24 +104,24 @@ export default function Applications() {
           </div>
 
           <motion.div variants={itemVariants} className="panel p-10 md:p-16 flex flex-col lg:flex-row gap-16 items-center justify-between overflow-hidden relative">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-green-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+            <div className="absolute top-0 right-0 w-96 h-96 bg-brand-cyan/10 rounded-full blur-[100px] pointer-events-none"></div>
             
             <div className="w-full lg:w-1/2 relative z-10">
               <ul className="grid grid-cols-1 gap-4">
                 {targets.map((target, i) => (
                   <li key={i} className="flex items-center gap-3 pb-2">
-                    <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full shadow-[0_0_8px_rgba(52,211,153,0.8)]"></span>
+                    <span className="w-1.5 h-1.5 bg-brand-cyan rounded-full shadow-[0_0_8px_rgba(59,109,246,0.8)]"></span>
                     <span className="text-base text-white font-light">{t(target.tr, target.en)}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="w-full lg:w-1/2 p-10 bg-emerald-500/10 border border-emerald-500/30 rounded-lg text-left relative z-10">
-              <p className="text-lg text-emerald-50 font-light leading-relaxed">
+            <div className="w-full lg:w-1/2 p-10 bg-black/60 border border-brand-cyan/30 rounded-lg text-left relative z-10">
+              <p className="text-lg text-slate-200 font-light leading-relaxed">
                 {t(
-                  <><strong className="font-bold text-white">PURLINA MATRIX CORE</strong> enerji kullanımını <strong className="font-semibold text-emerald-300">%48'e kadar azaltabilir</strong>, bilgi işlem performansını <strong className="font-semibold text-emerald-300">%40'a kadar artırabilir</strong> ve sermaye ve işletme giderlerini <strong className="font-semibold text-emerald-300">%40'a kadar düşürebilir</strong>.</>,
-                  <><strong className="font-bold text-white">PURLINA MATRIX CORE</strong> can reduce energy consumption by up to <strong className="font-bold text-emerald-300">48%</strong>, increase computing performance by up to <strong className="font-bold text-emerald-300">40%</strong>, and lower capital and operating expenses by up to <strong className="font-bold text-emerald-300">40%</strong>.</>
+                  <><strong className="font-bold text-white">PURLINA MATRIX CORE</strong> enerji kullanımını <strong className="font-semibold text-brand-cyan">%48'e kadar azaltabilir</strong>, bilgi işlem performansını <strong className="font-semibold text-brand-cyan">%40'a kadar artırabilir</strong> ve sermaye ve işletme giderlerini <strong className="font-semibold text-brand-cyan">%40'a kadar düşürebilir</strong>.</>,
+                  <><strong className="font-bold text-white">PURLINA MATRIX CORE</strong> can reduce energy consumption by up to <strong className="font-bold text-brand-cyan">48%</strong>, increase computing performance by up to <strong className="font-bold text-brand-cyan">40%</strong>, and lower capital and operating expenses by up to <strong className="font-bold text-brand-cyan">40%</strong>.</>
                 )}
               </p>
             </div>

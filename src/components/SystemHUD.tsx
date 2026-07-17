@@ -28,7 +28,7 @@ export default function SystemHUD() {
       if (tempRef.current) {
         tempRef.current.textContent = `${temp.toFixed(1)}°C`;
         tempRef.current.style.color =
-          temp > 80 ? '#ef4444' : temp > 50 ? '#f59e0b' : '#22d3ee';
+          temp > 80 ? '#ef4444' : temp > 50 ? '#f59e0b' : '#3b6df6';
       }
       if (depthRef.current) {
         depthRef.current.textContent = `-${String(Math.round(dive.depth)).padStart(2, '0')} M`;
@@ -37,7 +37,7 @@ export default function SystemHUD() {
         const pct = Math.min(100, Math.max(4, ((temp - 30) / 65) * 100));
         barRef.current.style.width = `${pct}%`;
         barRef.current.style.background =
-          temp > 80 ? '#ef4444' : temp > 50 ? '#f59e0b' : '#22d3ee';
+          temp > 80 ? '#ef4444' : temp > 50 ? '#f59e0b' : '#3b6df6';
       }
       setAct((c) => (c !== dive.act ? dive.act : c));
       raf = requestAnimationFrame(tick);
@@ -53,10 +53,10 @@ export default function SystemHUD() {
         <div className="border border-white/10 bg-[#020617]/70 backdrop-blur-md px-4 py-3 rounded-lg min-w-[190px]">
           <div className="flex justify-between items-baseline gap-4 mb-1">
             <span className="text-slate-500">Coolant</span>
-            <span ref={tempRef} className="text-sm font-bold tabular-nums text-right" style={{ color: '#22d3ee' }}>42.0°C</span>
+            <span ref={tempRef} className="text-sm font-bold tabular-nums text-right" style={{ color: '#3b6df6' }}>42.0°C</span>
           </div>
           <div className="h-[3px] w-full bg-white/5 rounded-full overflow-hidden mb-3">
-            <div ref={barRef} className="h-full rounded-full transition-none" style={{ width: '20%', background: '#22d3ee' }} />
+            <div ref={barRef} className="h-full rounded-full transition-none" style={{ width: '20%', background: '#3b6df6' }} />
           </div>
           <div className="flex justify-between items-baseline gap-4 mb-2">
             <span className="text-slate-500">Depth</span>

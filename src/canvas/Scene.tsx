@@ -14,7 +14,7 @@ import ExplodingBlade from './ExplodingBlade';
 // ====================================================================
 
 const FOG_COLOR = '#020b18';
-const CYAN = '#22d3ee';
+const CYAN = '#3b6df6';
 
 function useQuality() {
   const [quality, setQuality] = useState<'high' | 'low'>('high');
@@ -160,7 +160,7 @@ function Atmosphere() {
 function TankEnvironment() {
   const wallMat = useMemo(() => new THREE.MeshStandardMaterial({ color: '#020813', roughness: 0.92, metalness: 0.2 }), []);
   const ribMat = useMemo(() => new THREE.MeshStandardMaterial({ color: '#060d1a', roughness: 0.6, metalness: 0.5 }), []);
-  const stripMat = useMemo(() => new THREE.MeshBasicMaterial({ color: new THREE.Color('#0e7490').multiplyScalar(0.55), toneMapped: false }), []);
+  const stripMat = useMemo(() => new THREE.MeshBasicMaterial({ color: new THREE.Color('#1d4ed8').multiplyScalar(0.55), toneMapped: false }), []);
 
   // ribs: horizontal structure lines on the three walls, every 2.2 m
   const ribs = useMemo(() => {
@@ -283,7 +283,7 @@ function Passers() {
 
 function FloorGrid() {
   const uniforms = useMemo(() => ({
-    uColor: { value: new THREE.Color('#164e63') },
+    uColor: { value: new THREE.Color('#16337a') },
     uOpacity: { value: 0.45 },
   }), []);
 
@@ -633,104 +633,17 @@ function Bubbles({ quality }: { quality: 'high' | 'low' }) {
   );
 }
 
-// -- COOLANT STREAM: the protagonist. One continuous ribbon of liquid
-//    light that travels the whole dive with the visitor -- enters at the
-//    surface, threads the burning racks (running hot as it absorbs
-//    their heat), cools back to cyan, and pools at the product vials.
-//    Everything else in the tank is silhouette; this gets the light. --
-const STREAM_POINTS: [number, number, number][] = [
-  [7.5, 2.2, 4],      // above the surface, beside the hero blade
-  [4.5, 0.2, 2.5],    // pierces the meniscus
-  [1.5, -3.5, -1],    // first sweep down
-  [-3, -7.5, -4],     // toward the wall
-  [-4.8, -11.5, -5.2],// enters the rack column -- heat pickup
-  [-4.2, -15, -6.2],
-  [-5.2, -18.5, -5.6],// exits the racks
-  [-8.5, -22, -3.5],  // wide curl as the camera swings around
-  [-6.5, -25.5, -1],
-  [-3.8, -28, -0.5],  // past the exploded blade
-  [-0.5, -30.5, -2.5],
-  [3, -33.5, -2.5],   // past the molecule
-  [5, -36.5, -3],
-  [4.5, -39.5, -3],   // pools at the vials
-  [3.5, -41.2, -3],
-];
-
-function CoolantStream() {
-  const curve = useMemo(
-    () => new THREE.CatmullRomCurve3(STREAM_POINTS.map((p) => new THREE.Vector3(...p)), false, 'catmullrom', 0.5),
-    []
-  );
-
-  const uniforms = useMemo(() => ({
-    uTime: { value: 0 },
-    uHeat: { value: 0 },   // how hot the rack zone runs (act 3 -> 1, act 4 sweeps to 0)
-  }), []);
-
-  useFrame((sys, delta) => {
-    uniforms.uTime.value = sys.clock.getElapsedTime();
-    const targetHeat = dive.act === 3 ? 1 : dive.act === 4 ? Math.max(0, 1 - dive.actProgress * 1.4) : 0;
-    uniforms.uHeat.value = THREE.MathUtils.lerp(uniforms.uHeat.value, targetHeat, delta * 1.5);
-  });
-
-  const vertexShader = `
-    varying vec2 vUv;
-    void main() {
-      vUv = uv;
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-    }
-  `;
-  const fragmentShader = `
-    uniform float uTime;
-    uniform float uHeat;
-    varying vec2 vUv;
-    void main() {
-      // luminous pulses travelling along the stream (constants pre-folded --
-      // nested constant math hangs the ANGLE/D3D shader compiler on some iGPUs)
-      float strands = pow(abs(sin(vUv.x * 502.65 - uTime * 0.22)), 2.0);
-      float slow = pow(abs(sin(vUv.x * 56.55 - uTime * 0.0785)), 2.0);
-      // the stretch that threads the racks runs hot while they burn
-      float heatZone = smoothstep(0.24, 0.30, vUv.x) * (1.0 - smoothstep(0.42, 0.50, vUv.x));
-      float heat = heatZone * uHeat;
-      vec3 cool = vec3(0.13, 0.83, 0.93);
-      vec3 hot  = vec3(1.0, 0.32, 0.16);
-      vec3 col = mix(cool, hot, heat);
-      float intensity = (0.6 + strands * 0.95 + slow * 0.5) * 2.5;
-      float startFade = smoothstep(0.0, 0.04, vUv.x);
-      float endFade = 1.0 - smoothstep(0.96, 1.0, vUv.x);
-      float alpha = (0.62 + strands * 0.38) * startFade * endFade;
-      gl_FragColor = vec4(col * intensity, alpha);
-    }
-  `;
-
-  // ponytail: single tube; the glow halo comes free from Bloom -- a second
-  // fat additive tube caused GPU-timeout freezes on integrated GPUs
-  return (
-    <mesh>
-      <tubeGeometry args={[curve, 240, 0.13, 12, false]} />
-      <shaderMaterial
-        uniforms={uniforms}
-        vertexShader={vertexShader}
-        fragmentShader={fragmentShader}
-        transparent
-        depthWrite={false}
-        blending={THREE.AdditiveBlending}
-      />
-    </mesh>
-  );
-}
-
 // -- FLOW RIBBON: the brochure cover wave, on the surface horizon ----
 function FlowRibbon() {
   const uniforms = useMemo(() => ({
     uTime: { value: 0 },
-    uColor: { value: new THREE.Color('#38bdf8') },
+    uColor: { value: new THREE.Color('#5b8cff') },
     uOpacity: { value: 0 },
   }), []);
 
   useFrame((sys, delta) => {
     uniforms.uTime.value = sys.clock.getElapsedTime();
-    const target = dive.act <= 1 ? 0.8 : dive.act === 2 ? 0.2 : 0;
+    const target = dive.act === 0 ? 0.35 : 0;
     uniforms.uOpacity.value = THREE.MathUtils.lerp(uniforms.uOpacity.value, target, delta * 2);
   });
 
@@ -864,12 +777,12 @@ function HeroBlade({ quality }: { quality: 'high' | 'low' }) {
 
       <instancedMesh ref={dropRef} args={[undefined as any, undefined as any, 4]}>
         <sphereGeometry args={[0.08, 16, 16]} />
-        <meshBasicMaterial color="#06b6d4" transparent opacity={0.8} toneMapped={false} />
+        <meshBasicMaterial color="#2b5ce6" transparent opacity={0.8} toneMapped={false} />
       </instancedMesh>
 
       <mesh position={[0, -0.55, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <circleGeometry args={[1.2, 32]} />
-        <meshBasicMaterial ref={discMatRef} color="#06b6d4" transparent opacity={0.1} blending={THREE.AdditiveBlending} depthWrite={false} toneMapped={false} />
+        <meshBasicMaterial ref={discMatRef} color="#2b5ce6" transparent opacity={0.1} blending={THREE.AdditiveBlending} depthWrite={false} toneMapped={false} />
       </mesh>
     </group>
   );
@@ -878,7 +791,7 @@ function HeroBlade({ quality }: { quality: 'high' | 'low' }) {
 // -- RACK COLUMN: submerged compute, burns red then cools as the
 //    camera swings past -- the product story told as light -----------
 const _ledHot = new THREE.Color('#ef4444').multiplyScalar(2.8);
-const _ledCool = new THREE.Color('#22d3ee').multiplyScalar(2.2);
+const _ledCool = new THREE.Color('#3b6df6').multiplyScalar(2.2);
 const _ledDim = new THREE.Color('#1e293b');
 const _ledTmp = new THREE.Color();
 
@@ -958,6 +871,132 @@ function RackColumn() {
   );
 }
 
+// -- DATA BARS: the brochure p7 zettabyte chart, 2010-2029, grown in
+//    3D beside the text as the problem act plays -----------------------
+const ZB = [2, 5, 6.5, 9, 12, 15.5, 26, 33, 41, 64, 79, 97, 120, 147, 181, 215, 253, 297, 348, 405];
+
+function DataBars() {
+  const groupRef = useRef<THREE.Group>(null);
+  const grow = useRef(0);
+  const mat = useMemo(
+    () => new THREE.MeshBasicMaterial({ color: new THREE.Color('#3b6df6').multiplyScalar(1.5), toneMapped: false, transparent: true, opacity: 0.85 }),
+    []
+  );
+
+  useFrame((_, delta) => {
+    if (!groupRef.current) return;
+    const visible = dive.act === 3;
+    groupRef.current.visible = visible;
+    if (!visible) { grow.current = 0; return; }
+    grow.current = THREE.MathUtils.lerp(grow.current, 1, delta * 1.2);
+    groupRef.current.children.forEach((bar, i) => {
+      const h = (0.2 + (ZB[i] / 405) * 3.6) * grow.current;
+      bar.scale.y = Math.max(0.01, h);
+      bar.position.y = h / 2;
+    });
+  });
+
+  return (
+    <group ref={groupRef} position={[4.0, -16.2, -9.5]} rotation={[0, -0.3, 0]}>
+      {ZB.map((_, i) => (
+        <mesh key={i} position={[i * 0.42 - 4, 0.1, 0]} material={mat}>
+          <boxGeometry args={[0.3, 1, 0.3]} />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+// -- THE POD: the brochure p2 hero object — glass immersion tank with
+//    submerged blades; one blade lifts as the MATRIX CORE act plays ---
+function Pod() {
+  const groupRef = useRef<THREE.Group>(null);
+  const liftRef = useRef<THREE.Group>(null);
+  const bladeLED = useMemo(() => new THREE.Color('#3b6df6').multiplyScalar(2.4), []);
+
+  useFrame((sys, delta) => {
+    if (!groupRef.current) return;
+    const visible = dive.act >= 4 && dive.act <= 6;
+    groupRef.current.visible = visible;
+    if (!visible) return;
+    if (liftRef.current) {
+      // act 5: the signature blade-lift from brochure p8
+      const t = dive.act < 5 ? 0 : dive.act > 5 ? 1 : dive.actProgress;
+      const eased = t * t * (3 - 2 * t);
+      const bob = Math.sin(sys.clock.getElapsedTime() * 0.6) * 0.04;
+      liftRef.current.position.y = THREE.MathUtils.lerp(liftRef.current.position.y, eased * 2.1 + bob, delta * 3);
+    }
+  });
+
+  return (
+    <group ref={groupRef} position={[3.2, -26.6, -5]} rotation={[0, -0.35, 0]}>
+      {/* base + top rim */}
+      <mesh position={[0, -1.5, 0]}>
+        <boxGeometry args={[4.6, 0.35, 3]} />
+        <meshPhysicalMaterial color="#0b1220" metalness={0.8} roughness={0.35} />
+      </mesh>
+      <mesh position={[0, 1.55, 0]}>
+        <boxGeometry args={[4.5, 0.12, 2.9]} />
+        <meshPhysicalMaterial color="#0b1220" metalness={0.8} roughness={0.35} />
+      </mesh>
+      {/* glass shell */}
+      <mesh>
+        <boxGeometry args={[4.3, 2.9, 2.7]} />
+        <meshPhysicalMaterial color="#9fc2ff" metalness={0} roughness={0.05} transparent opacity={0.09} side={THREE.DoubleSide} depthWrite={false} />
+      </mesh>
+      {/* fluid line */}
+      <mesh position={[0, 1.05, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[4.2, 2.6]} />
+        <meshBasicMaterial color={new THREE.Color('#2b5ce6').multiplyScalar(1.2)} transparent opacity={0.32} depthWrite={false} toneMapped={false} side={THREE.DoubleSide} />
+      </mesh>
+      {/* submerged blades */}
+      {[-1.5, -0.9, -0.3, 0.9, 1.5].map((x) => (
+        <group key={x} position={[x, -0.15, 0]}>
+          <mesh>
+            <boxGeometry args={[0.18, 2.2, 2.2]} />
+            <meshPhysicalMaterial color="#0f172a" metalness={0.85} roughness={0.3} />
+          </mesh>
+          {[-0.7, -0.1, 0.5].map((z) => (
+            <mesh key={z} position={[0.1, 0, z]} rotation={[0, Math.PI / 2, 0]}>
+              <planeGeometry args={[0.5, 0.05]} />
+              <meshBasicMaterial color={bladeLED} toneMapped={false} />
+            </mesh>
+          ))}
+        </group>
+      ))}
+      {/* the lifted blade (starts submerged in the gap at x=0.3) */}
+      <group ref={liftRef}>
+        <group position={[0.3, -0.15, 0]}>
+          <mesh>
+            <boxGeometry args={[0.18, 2.2, 2.2]} />
+            <meshPhysicalMaterial color="#0f172a" metalness={0.85} roughness={0.25} />
+          </mesh>
+          {[-0.7, -0.1, 0.5].map((z) => (
+            <mesh key={z} position={[0.1, 0, z]} rotation={[0, Math.PI / 2, 0]}>
+              <planeGeometry args={[0.5, 0.05]} />
+              <meshBasicMaterial color={bladeLED} toneMapped={false} />
+            </mesh>
+          ))}
+        </group>
+      </group>
+      {/* CDU beside the tank + hot/cold lines (brochure p2 labels) */}
+      <mesh position={[2.9, -0.5, 0]}>
+        <boxGeometry args={[0.9, 2.0, 1.4]} />
+        <meshPhysicalMaterial color="#0b1220" metalness={0.7} roughness={0.4} />
+      </mesh>
+      <mesh position={[2.42, -0.9, 0.35]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[0.05, 0.05, 0.9, 8]} />
+        <meshBasicMaterial color={new THREE.Color('#f97316').multiplyScalar(1.6)} toneMapped={false} />
+      </mesh>
+      <mesh position={[2.42, -1.2, -0.35]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[0.05, 0.05, 0.9, 8]} />
+        <meshBasicMaterial color={new THREE.Color('#3b6df6').multiplyScalar(1.6)} toneMapped={false} />
+      </mesh>
+      <pointLight position={[0, 0.4, 0]} intensity={6} distance={7} color="#3b6df6" />
+    </group>
+  );
+}
+
 // -- MOLECULE CHAIN: straight-chain paraffin, drifting past (act 6) --
 function MoleculeChain() {
   const groupRef = useRef<THREE.Group>(null);
@@ -1021,7 +1060,7 @@ function Vials() {
           </mesh>
           <mesh position={[0, -1.1 + (2.6 * fill) / 2, 0]}>
             <cylinderGeometry args={[0.4, 0.4, 2.6 * fill, 16]} />
-            <meshBasicMaterial color={new THREE.Color('#0891b2').multiplyScalar(2.4)} transparent opacity={0.9} toneMapped={false} />
+            <meshBasicMaterial color={new THREE.Color('#2b5ce6').multiplyScalar(2.4)} transparent opacity={0.9} toneMapped={false} />
           </mesh>
           <mesh position={[0, -1.62, 0]}>
             <cylinderGeometry args={[0.7, 0.8, 0.24, 20]} />
@@ -1029,7 +1068,7 @@ function Vials() {
           </mesh>
         </group>
       ))}
-      <spotLight position={[0, -36, 4]} angle={0.6} penumbra={1} intensity={30} color="#38bdf8" target-position={[0, -41, -3]} />
+      <spotLight position={[0, -36, 4]} angle={0.6} penumbra={1} intensity={30} color="#5b8cff" target-position={[0, -41, -3]} />
     </group>
   );
 }
@@ -1080,7 +1119,6 @@ export default function Scene({ onCreated, isLoaded }: { onCreated?: () => void;
         <DiveCamera isLoaded={isLoaded} />
 
         {/* set pieces staged along the descent */}
-        <CoolantStream />
         <FlowRibbon />
         <FluidSurface quality={quality} />
         <HeroBlade quality={quality} />
@@ -1088,6 +1126,8 @@ export default function Scene({ onCreated, isLoaded }: { onCreated?: () => void;
         <Bubbles quality={quality} />
         <Motes quality={quality} />
         <RackColumn />
+        <DataBars />
+        <Pod />
         <ExplodingBlade quality={quality} position={[-4, -28, -1]} />
         <MoleculeChain />
         <Vials />
@@ -1095,7 +1135,7 @@ export default function Scene({ onCreated, isLoaded }: { onCreated?: () => void;
 
         <Environment resolution={128}>
           <Lightformer intensity={2} rotation-x={Math.PI / 2} position={[0, 5, -9]} scale={[10, 10, 1]} color="white" />
-          <Lightformer intensity={1.5} rotation-y={Math.PI / 2} position={[-5, 1, -1]} scale={[10, 2, 1]} color="#06b6d4" />
+          <Lightformer intensity={1.5} rotation-y={Math.PI / 2} position={[-5, 1, -1]} scale={[10, 2, 1]} color="#2b5ce6" />
         </Environment>
 
         <PostFX />

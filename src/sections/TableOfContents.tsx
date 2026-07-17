@@ -22,7 +22,8 @@ export default function TableOfContents() {
     { tr: 'Immersion Cooling Teknolojisi', en: 'Immersion Cooling Technology', depth: '-16 M', target: '#toc-technology' },
     { tr: 'PURLINA MATRIX CORE', en: 'PURLINA MATRIX CORE', depth: '-24 M', target: '#toc-core' },
     { tr: 'PURLINA MATRIX CORE X Serisi', en: 'PURLINA MATRIX CORE X Series', depth: '-30 M', target: '#toc-series' },
-    { tr: 'Avantajları & Kullanım Alanları', en: 'Advantages & Applications', depth: '-38 M', target: '#toc-advantages' },
+    { tr: 'PURLINA MATRIX CORE Avantajları', en: 'Advantages of PURLINA MATRIX CORE', depth: '-36 M', target: '#toc-advantages' },
+    { tr: 'PURLINA MATRIX CORE Kullanım Alanları', en: 'Applications of PURLINA MATRIX CORE', depth: '-38 M', target: '#toc-applications' },
   ];
 
   return (

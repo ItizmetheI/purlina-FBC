@@ -100,7 +100,7 @@ export default function DataCenterGrowth() {
               {chartData.map((val, idx) => (
                 <motion.div
                   key={idx}
-                  className="w-full bg-cyan-600 rounded-t-sm opacity-90 hover:opacity-100 hover:bg-blue-400 transition-colors relative group"
+                  className="w-full bg-blue-600 rounded-t-sm opacity-90 hover:opacity-100 hover:bg-blue-400 transition-colors relative group"
                   initial={{ height: 0 }}
                   whileInView={{ height: `${(val / 405) * 100}%` }}
                   viewport={{ once: true }}

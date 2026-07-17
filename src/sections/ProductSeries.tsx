@@ -77,7 +77,7 @@ export default function ProductSeries() {
                 data-cursor="hover"
                 onMouseEnter={() => setHoveredSeries(item.name)}
                 onMouseLeave={() => setHoveredSeries(null)}
-                className="group relative rounded-lg overflow-hidden bg-[#0f172a] border border-white/5 p-8 flex flex-col items-center text-center transition-all duration-500 hover:border-brand-cyan/50 hover:shadow-[0_0_40px_rgba(6,182,212,0.15)] hover:-translate-y-2"
+                className="group relative rounded-lg overflow-hidden bg-[#0f172a] border border-white/5 p-8 flex flex-col items-center text-center transition-all duration-500 hover:border-brand-cyan/50 hover:shadow-[0_0_40px_rgba(43,92,230,0.15)] hover:-translate-y-2"
               >
                 {/* Hover gradient reveal */}
                 <div className="absolute inset-0 bg-gradient-to-br from-brand-cyan/20 to-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out mix-blend-overlay"></div>
@@ -87,11 +87,11 @@ export default function ProductSeries() {
                   <div className="w-full bg-gradient-to-t from-blue-700 to-brand-cyan rounded-full transition-all duration-1000 ease-out opacity-60 group-hover:opacity-100" style={{ height: `${60 + i * 15}%` }} />
                 </div>
                 
-                <h3 className="text-5xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-br from-slate-100 to-slate-500 group-hover:from-cyan-400 group-hover:to-blue-600 mb-6 relative z-10 transition-all duration-500">
+                <h3 className="text-5xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-br from-slate-100 to-slate-500 group-hover:from-blue-400 group-hover:to-blue-600 mb-6 relative z-10 transition-all duration-500">
                   {item.name}
                 </h3>
                 <div className="flex flex-col gap-6 flex-grow relative z-10">
-                  <p className="text-slate-400 group-hover:text-cyan-200 text-sm font-light transition-colors duration-500">
+                  <p className="text-slate-400 group-hover:text-blue-200 text-sm font-light transition-colors duration-500">
                     {t(item.descTr, item.desc)}
                   </p>
                 </div>

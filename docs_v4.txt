@@ -1,0 +1,643 @@
+Yapay Zekâ Veri Merkezleri İçin
+Dielectric Immersion Soğutma Platformu
+Dielectric Immersion Cooling Platform
+for Artificial Intelligence Data Centers
+
+
+
+
+   Geleceği İşleyen
+   Termal Devrim!
+    The Thermal Revolution Shaping the Future!
+Soğutmanın Değil,
+Evrimin Kararlı Ortamı
+     Not Just Cooling,
+     But a Stable Environment for Evolution
+İçindekiler
+Table of Contents
+
+
+Kurumsal Vizyon & Alkim Petrokimya      04
+Corporate Vision & Alkim Petrokimya     04
+
+Yeni Nesil Isı Yönetimi                 06
+Next-Generation Thermal Management
+
+Immersion Cooling Teknolojisi           09
+Immersion Cooling Technology
+
+PURLINA MATRIX CORE                     10
+PURLINA MATRIX CORE
+
+PURLINA MATRIX CORE X Serisi            12
+PURLINA MATRIX CORE X Series
+
+PURLINA MATRIX CORE Avantajları         16
+Advantages of PURLINA MATRIX CORE
+
+PURLINA MATRIX CORE Kullanım Alanları   17
+Applications of PURLINA MATRIX CORE
+Corporate Vision &                                   Kurumsal Vizyon &
+Alkim Petrokimya                                     Alkim Petrokimya
+
+
+
+The Invisible Strength                               Yarının
+Behind Tomorrow’s                                    Kusursuz Formüllerine
+Flawless                                             Temel Oluşturan
+Formulations                                         Görünmez Güç
+Alkim Petrokimya is one of the leading               Alkim Petrokimya, çeyrek asrı aşan
+actors in the chemical industry with over            tecrübesi ve modern üretim
+a quarter-century of experience and                  altyapısıyla kimya sektörünün öncü
+modern production infrastructure. In our             aktörlerinden biridir. İstanbul
+14,500 m² state-of-the-art facilities in             Tuzla’daki 14.500 m²’lik modern
+Istanbul Tuzla, we produce not just                  tesislerimizde, inovasyonu ve
+products but strategic solutions by                  sürdürülebilirliği merkeze alarak
+placing innovation and sustainability at             sadece ürün değil, stratejik
+our core.                                            çözümler üretiyoruz.
+
+
+
+
+Our Operational Power / Operasyonel Gücümüz
+
+
+
+52.000 Tons                                 270.000 Tons/Year
+Active Stock Capacity                       Trade Volume
+52.000 Ton Aktif Stok Kapasitesi            270.000 Ton/Yıl Ticaret Hacmi
+
+
+
+
+60+ Tankers                                 6 Warehouses
+Special Distribution Fleet                  Uninterrupted Logistics via 6 Separate
+60+ Tanker Özel Dağıtım Filosu              Bonded Warehouses
+                                            6 Ayrı Antrepo ile Kesintisiz Lojistik
+
+
+
+
+                                                                                          5
+    Yeni Nesil Isı Yönetimi
+    Next-Generation Thermal Management
+    Dijital dönüşümün ilk evresinde veri konuşuldu, ikinci evresinde hız ve işlem gücü.
+    Bugün ise üçüncü evreye geçilmiş durumda: ısı yönetimi.
+
+    In the first phase of digital transformation, data was the focus; in the second phase, speed
+    and computing power. Today, we have entered the third phase: thermal management.
+
+
+
+
+    Megawatt seviyesinde enerji tüketen yapay zekâ kümeleri, büyük dil modeli (LLM) eğitim
+    altyapıları, yüksek yoğunluklu GPU sistemleri ve HPC merkezleri artık yalnızca işlem
+    kapasitesiyle değil, üretilen ısının nasıl yönetildiğiyle tanımlanmaktadır.
+
+    Klasik hava ve su bazlı soğutma sistemleri yüksek enerji tüketimi, evaporatif su kaybı ve
+    karmaşık mekanik altyapı nedeniyle sürdürülebilirlik sınırına ulaşmıştır. Bu nedenle immersion
+    cooling teknolojisi veri merkezi mimarisinin doğal evrimi olarak kabul edilmektedir.
+
+    Megawatt-level energy-consuming AI clusters, large language model (LLM) training
+    infrastructures, high-density GPU systems, and HPC centers are now defined not only by their
+    processing capacity but also by how the generated heat is managed.
+
+    Conventional air- and water-based cooling systems have reached the limits of sustainability
+    due to high energy consumption, evaporative water loss, and complex mechanical infra-
+    structure. For this reason, immersion cooling technology is considered the natural evolution of
+    data center architecture.
+
+
+       PURLINA MATRIX CORE bu yeni mimarinin merkezinde yer alan dielectric termal
+       platformdur. Bu bir soğutma sıvısı değildir; işlemcilerin çalıştığı kararlı ortamdır.
+       PURLINA MATRIX CORE is the dielectric thermal platform at the center of this new
+       architecture. This is not a cooling fluid; it is the stable environment in which
+       processors operate.
+
+
+6
+Veri Merkezlerinin Büyümesi
+The Growth of Data Centers
+Bulut bilişim, yapay zekâ, büyük veri                       The rapid development of cloud comput-
+analitiği ve IoT teknolojilerinin hızlı gelişimi            ing, artificial intelligence, big data analyt-
+veri merkezlerine olan talebi dramatik                      ics, and IoT technologies is dramatically
+şekilde artırmaktadır.                                      increasing the demand for data centers.
+
+Bugün:                                                      Today:
+
+•   Veri merkezi altyapısı her yıl yaklaşık %20             •    Data center infrastructure is growing
+    oranında büyümektedir.                                       at approximately 20% annually.
+•   Veri merkezleri küresel elektrik tüketi-                •    Data centers account for roughly 1% of
+    minin yaklaşık %1’ini oluşturmaktadır.                       global electricity consumption.
+•   Dünya genelinde veri hacmi 2010 yılında                 •    The global volume of data has in-
+                                                                 creased from 5 zettabytes in 2010 to
+    5 zettabyte seviyesinden 2025 yılında
+                                                                 180 zettabytes in 2025.
+    180 zettabyte seviyesine ulaşmıştır.
+
+Bu büyüme enerji tüketimi, karbon emisyon-                  This growth is creating significant pressure
+ları ve su kullanımı üzerinde önemli baskılar               on energy consumption, carbon emis-
+ yaratmaktadır.                                             sions, and water usage.
+
+
+
+
+       2010’dan 2029’a kadar dünya çapında oluşturulan, yakalanan, kopyalanan ve
+                   tüketilen veri veya bilgi hacmi (zettabayt cinsinden)
+
+
+
+
+      Volume of data/information created, captured, copied, and consumed worldwide
+                            from 2010 to 2029 (in zettabytes)
+
+                                    Kaynak/ Source: https://www.statista.com/statistics/871513/worldwide-data-created/
+
+
+                                                                                                                         7
+Immersion Cooling Teknolojisi
+Immersion Cooling Technology
+Immersion cooling mimarisinde elektronik                In immersion cooling architecture,
+bileşenler doğrudan dielectric sıvı içine               electronic components operate while direct-
+daldırılarak çalıştırılır. Bu sıvı elektriksel olarak   ly immersed in a dielectric fluid. This fluid is
+iletken değildir ve yüksek termal kapasiteye            electrically non-conductive and has a high
+sahiptir.                                               thermal capacity.
+
+Isı doğrudan sıvıya aktarılır ve doğal konvek-          Heat is transferred directly to the fluid and
+siyon veya pompa sirkülasyonu ile sistemden             removed from the system through natural
+uzaklaştırılır.                                         convection or pump-driven circulation.
+
+Ek bir avantajı da, bu ısının su soğutmalı ısı          An additional advantage is that this heat
+eşanjörleri tarafından geri kazanılıp bölgesel          can be recovered by water-cooled heat
+ısıtma projelerinde yeniden kullanılabilmesidir.        exchangers and reused in district heating
+                                                        projects.
+Bu teknoloji sayesinde:
+                                                        With this technology:
+•   Daha az gürültü
+•   Daha küçük alan kaplama                             •   Lower noise
+•   Daha düşük karmaşıklık                              •   Smaller footprint
+•   Daha düşük enerji tüketimi                          •   Lower system complexity
+•   Gelişmiş soğutma: sıvının havanın termal            •   Reduced energy consumption
+    kapasitesinin bin katından fazla termal             •   Enhanced cooling: the fluid has more
+                                                            than 1,000× the volumetric thermal ca-
+    kapasitesi vardır (hacimce)
+                                                            pacity of air
+•   Daha düşük PUE
+                                                        •   Lower PUE
+•   Donanımda sıcak nokta oluşma riskinin
+                                                        •   Lower risk of hardware hot spots
+    daha düşük olması
+                                                        •   Higher hash rates
+•   Daha yüksek hash oranları                           •   Near-zero water loss
+•   Neredeyse sıfır su kaybı                            •   Cooling without electricity (if the system
+•   Elektriğe ihtiyaç duymadan soğutma (sis-                is designed without pumps)
+    tem pompalar olmadan tasarlanmışsa)
+
+
+
+
+                                                                                                           9
+     PURLINA MATRIX COREFlawless
+     Formulations
+     PURLINA MATRIX CORE yüksek yoğunluklu bilgi              PURLINA MATRIX CORE is a single-phase
+     işlem altyapıları için geliştirilmiş tek fazlı           dielectric immersion cooling fluid developed
+     dielectric immersion soğutma akışkanıdır.                for high-density computing infrastructures.
+
+     GPU, CPU, VRM ve güç bileşenleri ile doğrudan            It is designed to come into direct contact
+     temas edecek şekilde tasarlanmıştır. Sıvı                with GPUs, CPUs, VRMs, and power compo-
+     yalnızca ısı transferi sağlamaz; aynı zaman-             nents. The fluid does not only provide heat
+     da elektronik sistemlerin çalıştığı kararlı termal       transfer; it also establishes the stable ther-
+     ortamı oluşturur.                                        mal environment in which electronic systems
+                                                              operate.
+
+
+
+     Termal Ortamın Yeniden Tasarlanması
+     Redesigning the Thermal Environment
+     PURLINA MATRIX CORE, donanımın doğrudan                  PURLINA MATRIX CORE has been developed
+     tek fazlı dielectric sıvı içine daldırıldığı             for immersion systems in which hardware
+     immersion sistemler için geliştirilmiştir.               is directly submerged in a single-phase
+                                                              dielectric fluid.
+     Fanları ortadan kaldırır, hava transfer kayıplarını
+     sıfırlar, evaporatif su kaybını minimize eder. Isı       It eliminates fans, removes air-transfer
+     doğrudan sıvıya aktarılır ve kontrollü biçimde           losses, and minimizes evaporative water
+     sistemden uzaklaştırılır.                                loss. Heat is transferred directly to the fluid
+                                                              and removed from the system in a
+     Bu mimaride sıvı yalnızca ısı taşımaz; işlem or-         controlled manner.
+     tamını stabilize eder. Elektronik bileşenlerle
+     elektriksel ve kimyasal olarak pasif bir ilişki kurar.   In this architecture, the fluid does not merely
+     Reaksiyona girmez, iletkenlik oluşturmaz, tortu          carry heat; it stabilizes the processing envi-
+     bırakmaz.                                                ronment. It forms an electrically and chem-
+                                                              ically passive relationship with electronic
+     Yüksek İzolasyon Gücü: 35 kV uzerindeki di-              components. It does not react, does not
+     electric breakdown voltajı ve 1012Ω.m seviye-            create conductivity, and leaves no residue.
+     sindeki elektriksel direnci ile guvenli bir opera-
+     syon sağlar.                                             High Insulation Strength: Provides safe op-
+                                                              eration with a dielectric breakdown voltage
+     Termal Kararlılık: Parlama noktası 240–265°C             above 35 kV and an electrical resistivity at
+     aralığındadır ve duşuk ucuculuğu sayesinde sıvı          the level of 10¹² Ω·m.
+     kaybı minimize edilir.
+                                                              Thermal Stability: The flash point ranges
+     Saf Yapı: Asit sayısı 0.01 mgKOH/g altındadır;           between 240–265°C, and its low volatility
+     kristal berraklığındaki yapısı optik sistemlerle         minimizes fluid loss.
+     tam uyum sağlar.
+                                                              Pure Structure: The acid number is below
+                                                              0.01 mgKOH/g, and its crystal-clear structure
+                                                              is fully compatible with optical systems.
+
+
+
+
+10
+Moleküler Yapı                                               Molecular Structure
+PURLINA MATRIX CORE ultra rafine edilmiş,                    PURLINA MATRIX CORE is a dielectric fluid
+aromatik içermeyen, dar moleküler dağılıma                   based on ultra-refined, aromatic-free,
+sahip doymuş hidrokarbon bazlı dielectric                    saturated hydrocarbons with a narrow
+akışkandır.                                                  molecular distribution.
+
+Düz zincirli parafinik yapı sayesinde:                       Thanks to its straight-chain paraffinic
+                                                             structure, it provides:
+• yüksek elektriksel direnç
+                                                             • High electrical resistivity
+• yüksek oksidasyon stabilitesi                              • High oxidation stability
+• uzun servis ömrü                                           • Long service life
+                                                             • Low volatility
+• düşük uçuculuk
+
+özellikleri sağlanır.
+
+
+
+Teknik Özellikleri Technical Specifications
+Elektriksel Özellikler (Electrical Properties)
+
+Dielectric breakdown voltajı (Dielectric breakdown voltage):                           >35 kV
+
+Elektriksel direnç (Electrical resistivity):                                           >10¹² Ω·m
+
+Asit sayısı (Acid number):                                                             <0.01 mgKOH/g
+
+
+
+Termal Özellikler (Thermal Properties)
+
+Özgül ısı kapasitesi (Specific heat capacity):                                         ~2.0 kJ/kgK
+
+Termal iletkenlik (Thermal conductivity):                                              ~0.13 W/mK
+
+Parlama noktası (Flash point):                                                         240–265°C
+                                               (En az en iyisidir)
+                                               (Lower is better)
+                                                 Acid Number
+
+                                                  Asit Sayısı
+
+
+
+
+  Sentetik Baz Yağ                                                Sentetik Baz Yağ
+(Synthetic Base Oil)                                            (Synthetic Base Oil)
+
+                                                                                                         11
+     PURLINA MATRIX CORE X SERİSİlawless
+     Formulations
+     PURLINA MATRIX CORE X SERIES
+     Farklı termal yük profilleri için üç ayrı viskozite segmenti geliştirilmiştir.
+     Three separate viscosity segments have been developed for different thermal load profiles.
+
+
+
+
+           X1
+          Yüksek akışkanlık ve
+                                                                 X2
+                                                               Isı transferi ve servis
+                                                                                                    X3
+                                                                                                    Yüksek termal stres
+          maksimum ısı transferi                               ömrü arasında dengeli                altında çalışan 7/24
+          gerektiren GPU yoğun                                 performans sunar.                    AI altyapıları için
+          sistemler için optimize                                                                   geliştirilmiştir
+          edilmiştir.
+
+          Optimized for GPU-                                  Provides balanced                 Developed for 24/7
+          dense systems that                                  performance                       AI infrastructures
+          require high fluidity and                           between heat transfer             operating under high
+          maximum heat transfer.                              and service life.                 thermal stress.
+
+
+
+
+     PURLINA MATRIX CORE Serisinin Tipik Özellikleri
+     TYPICAL PROPERTIES OF PURLINA MATRIX CORE Series
+
+     Türü / Type                                                                       X1      X2               X3
+
+     Renk / Color (ASTM)                                                               L0.5    L0.5             L0.5
+
+
+     Yoğunluk / Density (15oC)                                        g/cm3            0.837   0.809            0.819
+
+     Kinematik Vizkozite/Kinematic Viscosity 40oC)                    mm2/s            34.8    9.19             19.7
+
+     Alevlenme Noktası / Flash Point (COC)                            o
+                                                                          C            254     196              248
+
+     Otomatik Ateşleme Noktası / Auto-Ignition Point                  o
+                                                                          C            402     336              387
+
+
+     Asit Sayısı / Acid Number                                        mgKOH/g          0.01    0.01             0.01
+
+     Hacim Direnci / Volume Resistivity (25oC)                        TΩ . m           >1      >1               >1
+
+     Not: Tipik özellikler önceden haber verilmeksizin değiştirilebilir. (Mart 2026)
+
+     Note: The typical properties may be changed without notice. (March 2026)
+
+
+
+
+12
+        Kullanım Talimatları Önlemler Handling Precautions
+Bu ürünü kullanırken lütfen aşağıdaki önlemlere uyunuz.
+Follow these precautions when handling this product.
+
+X1                                                   X1
+Bileşim                                              Composition
+Baz Yağ(lar), Katkı Maddeleri                        Base Oil(s), Additives
+
+
+Tehlike Piktogramları                                Hazard pictograms
+ -                                                   -
+
+
+Sinyal Kelimesi                                      Signal Word
+ -                                                   -
+
+Tehlike Bildirimi                                    Hazard Statement
+ -                                                   -
+
+
+Önlem Bildirimleri                                   Precautionary Statements
+• Tüm güvenlik önlemlerini okuyup anlamadan          •    Do not handle until all safety precautions
+ürünü kullanmayın.                                        have been read and understood.
+• Koruyucu eldiven/koruyucu giysi/göz koruyucu/      •    Wear protective gloves/protective clothing/
+yüz koruyucu kullanın.                                    eye protection/face protection.
+• Ürünle göz temasına izin vermeyin. Ürünü yut-      •    Do not allow the eyes to become exposed to
+mayın.                                                    the product. Do not swallow the product.
+• Kullandıktan sonra ellerinizi iyice yıkayın.       •    Wash hands thoroughly after handling.
+• Bu ürünü kullanırken yemek yemeyin, içecek         •    Do not eat, drink or smoke when using this
+içmeyin veya sigara içmeyin.                              product.
+
+
+
+Önlemler                                             Response
+• YUTULMASI HALİNDE: Derhal bir ZEHİR DANIŞMA        •   IF SWALLOWED: Immediately call a POISON CENTER/
+MERKEZİ/doktoru arayın.                                  doctor.
+• YUTULMASI HALİNDE: Ağzı çalkalayın. KUSMAYA        •   IF SWALLOWED: Rinse mouth. Do NOT induce vomiting.
+ZORLAMAYIN.                                          •   If the eyes are exposed to the product: Rinse the eyes
+• Ürün gözünüze temas etmesi halinde: Gözlerinizi        with plenty of running water and immediately con-
+bol su ile yıkayın ve                                    tact a physician.
+derhal bir doktora başvurun.                         •   IF ON SKIN: Wash with plenty of soap and water.
+• CİLDE TEMAS ETMESİ HALİNDE: Bol sabun ve su ile
+yıkayın.
+                                                     Storage
+                                                     •   The product must be stored in a cool, well-ven-
+Saklama Koşulları
+                                                         tilated location where it will not be exposed to
+• Ürün, doğrudan güneş ışığına maruz kalmay-             direct sunlight.
+acak şekilde serin ve iyi havalandırılan bir yerde   •   Containers that have been opened must be
+saklanmalıdır.                                           tightly sealed.
+• Açılmış kaplar sıkıca kapatılmalıdır.
+
+                                                     Disposal
+İmha Koşulları
+                                                     •    Dispose of contents/container in accordance
+• İçeriği/kabı yerel/bölgesel/ulusal/uluslararası         with local/regional/national/international
+düzenlemelere uygun olarak imha edin.                     regulations.
+• Ürünün doğru kullanım yöntemleri konusunda         •    If there are any doubts about proper methods
+herhangi bir şüpheniz varsa, kullanıma başlama-           of handling the product, contact the point of
+dan önce satın aldığınız yere başvurun.                   purchase before proceeding with usage.
+
+
+
+
+                                                                                                                  13
+              Kullanım Talimatları Önlemler Handling Precautions
+      Bu ürünü kullanırken lütfen aşağıdaki önlemlere uyunuz.
+      Follow these precautions when handling this product.
+
+      X1, X2                                                  X1, X2
+      Bileşim                                                 Composition
+      Baz Yağ(lar), Katkı Maddeleri                           Base Oil(s), Additives
+
+
+      Tehlike Piktogramları                                   Hazard pictograms
+
+
+      Sinyal Kelimesi                                         Signal Word
+      TEKLİKELİ MADDE                                         DANGER
+
+      Tehlike Bildirimi                                       Hazard Statement
+     Yutulması ve solunum yollarına kaçması halinde
+                                                              May be fatal if swallowed and enters airways
+     ölümcül olabilir.
+
+
+     Önlem Bildirimleri                                   Precautionary Statements
+     • Tüm güvenlik önlemlerini okuyup anlamadan          •      Do not handle until all safety precautions
+     ürünü kullanmayın.                                          have been read and understood.
+     • Koruyucu eldiven/koruyucu giysi/göz koruyucu/      •      Wear protective gloves/protective clothing/
+     yüz koruyucu kullanın.                                      eye protection/face protection.
+     • Ürünle göz temasına izin vermeyin. Ürünü yut-      •      Do not allow the eyes to become exposed to
+     mayın.                                                      the product. Do not swallow the product.
+     • Kullandıktan sonra ellerinizi iyice yıkayın.       •      Wash hands thoroughly after handling.
+     • Bu ürünü kullanırken yemek yemeyin, içecek         •      Do not eat, drink or smoke when using this
+     içmeyin veya sigara içmeyin.                                product.
+
+
+
+     Önlemler                                             Response
+     • YUTULMASI HALİNDE: Derhal bir ZEHİR DANIŞMA        •     IF SWALLOWED: Immediately call a POISON CENTER/
+     MERKEZİ/doktoru arayın.                                    doctor.
+     • YUTULMASI HALİNDE: Ağzı çalkalayın. KUSMAYA        •     IF SWALLOWED: Rinse mouth. Do NOT induce vomiting.
+     ZORLAMAYIN.                                          •     If the eyes are exposed to the product: Rinse the eyes
+     • Ürün gözünüze temas etmesi halinde: Gözlerinizi          with plenty of running water and immediately con-
+     bol su ile yıkayın ve                                      tact a physician.
+     derhal bir doktora başvurun.                         •     IF ON SKIN: Wash with plenty of soap and water.
+     • CİLDE TEMAS ETMESİ HALİNDE: Bol sabun ve su ile
+     yıkayın.
+                                                          Storage
+                                                          •     The product must be stored in a cool, well-ven-
+     Saklama Koşulları
+                                                                tilated location where it will not be exposed to
+     • Ürün, doğrudan güneş ışığına maruz kalmay-               direct sunlight.
+     acak şekilde serin ve iyi havalandırılan bir yerde   •     Containers that have been opened must be
+     saklanmalıdır.                                             tightly sealed.
+     • Açılmış kaplar sıkıca kapatılmalıdır.
+
+                                                          Disposal
+     İmha Koşulları
+                                                          •      Dispose of contents/container in accordance
+     • İçeriği/kabı yerel/bölgesel/ulusal/uluslararası           with local/regional/national/international
+     düzenlemelere uygun olarak imha edin.                       regulations.
+     • Ürünün doğru kullanım yöntemleri konusunda         •      If there are any doubts about proper methods
+     herhangi bir şüpheniz varsa, kullanıma başlama-             of handling the product, contact the point of
+     dan önce satın aldığınız yere başvurun.                     purchase before proceeding with usage.
+
+
+
+
+14
+ SAF ve AO Destekli                                      With PURE and AO
+ Versiyonlarawless                                       Supported Versions
+ Saf Versiyon: Katkısız formülasyon. Moleküler           Pure Version: Additive-free formulation.
+ şeffaflık prensibiyle geliştirilmiştir. Orta yük ve     Developed based on the principle of molecu-
+ kısa süreli operasyonlar için idealdir.                 lar transparency. Ideal for medium loads and
+                                                         short-duration operations.
+ AO (Nörolojik Koruyucu Katman) Takviyeli
+ Versiyon: Fenolik, aminik veya fosfit bazlı             AO (Neurological Protective Layer) Enhanced
+ antioksidan sistemler içerir. Sürekli yüksek            Version: Contains phenolic, aminic, or phos-
+ termal döngü altında oksidatif zincir reaksi-           phite-based antioxidant systems. Suppresses
+ yonlarını baskılar. Viskozite değişimini                oxidative chain reactions under continu-
+ önler, tortu oluşumunu engeller ve sıvı                 ous high thermal cycling. Prevents viscosi-
+ ömrünü uzatır.                                          ty changes, inhibits deposit formation, and
+                                                         extends the service life of the fluid.
+
+
+
+ Enerji ve                                               Energy and
+ Su Verimliliğiess                                       Water Efficiency
+ Immersion cooling teknolojisi veri merke-               Immersion cooling technology provides
+ zlerinde önemli enerji avantajları sağlar.              significant energy advantages in data
+                                                         centers.
+ • Enerji tüketiminde %48’e kadar azalma                 • Up to 48% reduction in energy
+ • Toplam sahip olma maliyetinde %33’e                   • consumption
+ kadar düşüş                                             • Up to 33% decrease in total cost of
+ • CO2 emisyonlarında %30’a kadar azalma                     ownership (TCO)
+ • Veri merkezi alan ihtiyacında %80’e kadar             • Up to 30% reduction in CO2 emissions
+ düşüş                                                   • Up to 80% reduction in data center
+                                                             space requirements
+ Evaporatif sistemlere kıyasla su tüketiminde
+ %80’e varan azalma mümkündür.                           Compared to evaporative systems, water
+                                                         consumption can be reduced by up to 80%.
+
+
+
+
+Up to 48% reduction in    Up to 33% decrease in total   Up to 30% reduction in CO2   Up to 80% reduction in
+ energy consumption        cost of ownership (TCO)              emissions              data center space
+                                                                                          requirements
+
+
+
+
+                                                                                                              15
+     PURLINA                Advantages of
+     MATRIX CORE            PURLINA
+     AvantajlarıFormulationsMATRIX COREtions
+     Azaltılmış enerji maliyetleri ve emisyonlar:      Reduced energy costs and emissions: High
+     Yüksek soğutma verimliliği, mükemmel akış         cooling efficiency, excellent flow behavior,
+     davranışı ve üstün termodinamik özellikler,       and superior thermodynamic properties
+     ağınızı çalıştırmak için daha az enerjiye ihti-   mean less energy is required to operate
+     yaç duymanız anlamına gelir.                      your infrastructure.
+
+     Maliyet avantajı: Florokarbonlar ve               Cost advantage: More economical to
+     mühendislik sıvıları gibi alternatif ürünlere     produce compared to alternatives such as
+     göre üretimi daha ucuzdur.                        fluorocarbons and engineered fluids.
+
+     Yüksek uyumluluk: Neredeyse tüm bilgisa-          High compatibility: Suitable for use with
+     yar bileşenleriyle kullanıma uygundur.            nearly all computer components.
+
+     Güvenli ve kullanımı kolay: Personeliniz için     Safe and easy to use: Can contribute to a
+     daha güvenli bir çalışma ortamına katkıda         safer working environment for personnel.
+     bulunabilir.
+
+
+
+
+16
+PURLINA MATRIX CORE                                     Applications of
+Kullanım Alanları                                       PURLINA MATRIX CORE
+Bulut sağlayıcıları ve hiper ölçekli veri merke-        Cloud providers and hyperscale data centers
+zleri, çeşitli donanım gereksinimleri için tesisleri    can optimize efficiency and achieve sustaina-
+standartlaştırırken verimliliklerini optimize ede-      bility goals while standardizing their facilities for
+bilir ve sürdürülebilirlik hedeflerine ulaşabilirler.   diverse hardware requirements.
+
+Telekom sağlayıcıları, uç veri merkezlerini             Telecom providers can operate edge data
+her yerde işletebilirler. Ayrıca, güç ve soğutma        centers virtually anywhere. They can also utilize
+kullanılabilirliği kısıtlamaları dahilinde mevcut       existing buildings within the constraints of power
+binaları da kullanabilirler.                            and cooling availability.
+
+Ortak yerleşim sağlayıcıları, yüksek yoğunluklu         Colocation providers can support high-density
+ve yüksek performanslı bilgisayar kullanıcılarını       and high-performance computing users in a
+basit ve ölçeklenebilir bir şekilde destekleyebil-      simple and scalable way.
+irler.
+                                                        Enterprises can simplify on-premise data
+İşletmeler, yerinde yeni nesil donanım benim-           centers by adopting next-generation hardware
+seyerek yüksek verimlilik ve kamu bulutuna olan         locally, increasing efficiency and reducing de-
+bağımlılığı azaltmak için yerinde veri merkezlerini     pendence on public cloud infrastructure.
+basitleştirebilirler.
+                                                        Research institutes can support on-campus
+Araştırma enstitüleri, enerji ve maliyet tale-          high-performance computing environments
+pleriyle ilişkili gelişmiş veri merkezlerine ihtiyaç    without requiring advanced data centers asso-
+duymadan kampüs içi yüksek performanslı bilgi           ciated with high energy and cost demands.
+işlem ortamlarını destekleyebilirler.
+                                                        Blockchain operators can deploy their networks
+Blockchain operatörleri, donanımın çevreyle             anywhere without concerns about hardware
+etkileşiminden endişe duymadan ağlarını her             interaction with the environment. PURLINA
+yerde kurabilirler. Purlina Matrix Core Daldırma        MATRIX CORE Immersion Cooling Fluids provide
+Soğutma Sıvıları, ASIC veya GPU tabanlı maden-          a cost-effective way to maximize the hash rates
+cilerin hash oranlarını en üst düzeye çıkarmak          of ASIC- or GPU-based miners.
+için uygun maliyetli bir yol sağlar.
+                                                        •   AI data centers
+• Yapay zekâ veri merkezleri                            •   HPC centers
+• HPC merkezleri                                        •   GPU training clusters
+• GPU eğitim kümeleri                                   •   Edge AI data centers
+• Edge AI veri merkezleri                               •   Modular data centers
+• Modüler veri merkezleri                               •   Blockchain and crypto mining systems
+• Blockchain ve kripto madencilik sistemleri
+
+
+
+                                                        PURLINA MATRIX CORE can reduce energy
+                                                        consumption by up to 48%, increase
+     PURLINA MATRIX CORE enerji kullanımını
+                                                        computing performance by up to 40%, and
+     %48’e kadar azaltabilir, bilgi işlem
+                                                        lower capital and operating expenses by
+     performansını %40’a kadar artırabilir
+                                                        up to 40%.
+     ve sermaye ve işletme giderlerini %40’a
+     kadar düşürebilir.
+
+
+
+
+                                                                                                                17
+ Geleceği İşleyen Kararlı Ortam.
+                 The Stable Environment
+                  Processing the Future.
+
+                   ALKİM Petrokimya San. ve Tic. A.Ş.
+       Kimya Sanayicileri OSB Melek Aras Bulvarı, Aromatik Cd. No:61, 34956
+                           Aydınlı-KOSB/Tuzla/İstanbul
+
+
+
+
+ +90 (216) 593 24 61         info@alkimpetrokimya.com           /alkim-petrokiimya
++90 (544) 395 91 66         satis@alkimpetrokimya.com
+
+
+
+For more information about our products and services, please visit our website:
+           Ürünlerimiz ve hizmetlerimiz hakkında daha fazla bilgi için
+                        lütfen web sitemizi ziyaret edin:
+
+
+
+
+                           alkimpetrokimya
+                           .com
+

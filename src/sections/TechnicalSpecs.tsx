@@ -152,7 +152,7 @@ export default function TechnicalSpecs() {
                 {/* PURLINA MATRIX CORE Bar */}
                 <div className="flex flex-col items-center gap-4 w-24 h-full justify-end">
                   <motion.div
-                    className="w-full bg-gradient-to-t from-cyan-600 to-cyan-300 rounded-t-md relative drop-shadow-[0_0_10px_rgba(6,182,212,0.5)]"
+                    className="w-full bg-gradient-to-t from-blue-600 to-blue-300 rounded-t-md relative drop-shadow-[0_0_10px_rgba(43,92,230,0.5)]"
                     initial={{ height: 0 }}
                     whileInView={{ height: '6%' }}
                     viewport={{ once: true }}

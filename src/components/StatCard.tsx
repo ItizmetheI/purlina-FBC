@@ -30,7 +30,7 @@ export default function StatCard({ icon, stat, label, suffix = "%" }: { icon: Re
       
       <div className={`flex items-baseline gap-1 relative z-10 transition-[filter] duration-500 ${!isHovered && isInView ? 'blur-[1px]' : 'blur-0'}`}>
         <span className="text-3xl font-display font-bold text-white/50">{suffix}</span>
-        <motion.span className="text-6xl font-display font-bold text-brand-cyan drop-shadow-[0_0_10px_rgba(6,182,212,0.5)]">{displayValue}</motion.span>
+        <motion.span className="text-6xl font-display font-bold text-brand-cyan drop-shadow-[0_0_10px_rgba(43,92,230,0.5)]">{displayValue}</motion.span>
       </div>
       
       <h4 className={`font-bold text-white text-lg relative z-10 transition-[filter] duration-500 ${!isHovered && isInView ? 'blur-[0.5px]' : 'blur-0'}`}>{label}</h4>

@@ -51,10 +51,7 @@ export default function Hero() {
           transition={{ duration: 1.2, delay: 0.6, ease }}
           className="text-xl md:text-2xl text-slate-300 font-light max-w-xl leading-relaxed mb-12"
         >
-          {t(
-            'Bu bir soğutma sıvısı değildir; işlemcilerin çalıştığı kararlı ortamdır.',
-            'This is not a cooling fluid. It is the stable environment in which processors operate.'
-          )}
+          {t('Geleceği İşleyen Termal Devrim!', 'The Thermal Revolution Shaping the Future!')}
         </motion.p>
 
         <motion.div

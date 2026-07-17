@@ -16,7 +16,8 @@ import Advantages from './sections/Advantages';
 import Applications from './sections/Applications';
 import Footer from './sections/Footer';
 import Scene from './canvas/Scene';
-import VideoWorld from './canvas/VideoWorld';
+import BackdropFilm from './canvas/BackdropFilm';
+import ParticleOverlay from './canvas/ParticleOverlay';
 import SmoothScroll from './components/SmoothScroll';
 import CustomCursor from './components/CustomCursor';
 import SystemHUD from './components/SystemHUD';
@@ -84,15 +85,9 @@ export default function App() {
   const [minTimePassed, setMinTimePassed] = useState(false);
   const [canvasReady, setCanvasReady] = useState(false);
   const [appState, setAppState] = useState<'loading' | 'ready' | 'arrived'>('loading');
-  // pre-rendered world if the encodes exist, WebGL world otherwise
-  const [world, setWorld] = useState<'video' | 'webgl' | null>(null);
-
-  useEffect(() => {
-    fetch('/world/leg_1.mp4', { method: 'HEAD' })
-      // dev servers SPA-fallback missing files to index.html — demand real video
-      .then((r) => setWorld(r.ok && (r.headers.get('content-type') || '').includes('video') ? 'video' : 'webgl'))
-      .catch(() => setWorld('webgl'));
-  }, []);
+  // hybrid world: Blender film + particle overlay when the render exists,
+  // full WebGL scene otherwise
+  const [film, setFilm] = useState(true);
 
   useEffect(() => {
     // the dive always starts at the surface
@@ -139,8 +134,14 @@ export default function App() {
         />
 
         <div className={`transition-opacity duration-1000 ${loading ? 'opacity-0' : 'opacity-100'}`}>
-          {world === 'video' && <VideoWorld onReady={() => setCanvasReady(true)} />}
-          {world === 'webgl' && <Scene onCreated={() => setCanvasReady(true)} isLoaded={appState === 'arrived'} />}
+          {film ? (
+            <>
+              <BackdropFilm onReady={() => setCanvasReady(true)} onMissing={() => setFilm(false)} />
+              <ParticleOverlay />
+            </>
+          ) : (
+            <Scene onCreated={() => setCanvasReady(true)} isLoaded={appState === 'arrived'} />
+          )}
           <div className="relative z-10 flex flex-col pointer-events-none">
             <div data-act="0">
               <Hero />
@@ -183,7 +184,9 @@ export default function App() {
               <div className="h-[50vh]" aria-hidden />
               <Cine><Efficiency /></Cine>
               <Cine><Advantages /></Cine>
-              <Cine><Applications /></Cine>
+              <div id="toc-applications">
+                <Cine><Applications /></Cine>
+              </div>
             </div>
             <div data-act="9">
               <Footer />

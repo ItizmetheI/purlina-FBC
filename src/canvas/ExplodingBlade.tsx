@@ -107,7 +107,7 @@ export default function ExplodingBlade({ quality, position = [0, 0, 0] }: { qual
           <boxGeometry args={[4, 0.2, 4]} />
           <meshPhysicalMaterial color="#0f172a" metalness={0.9} roughness={0.2} />
         </mesh>
-        <EdgeStrip width={4} depth={4} color="#06B6D4" />
+        <EdgeStrip width={4} depth={4} color="#2B5CE6" />
         <Label text="GPU Unit" index={3} />
       </group>
       
@@ -125,7 +125,7 @@ export default function ExplodingBlade({ quality, position = [0, 0, 0] }: { qual
           <boxGeometry args={[3.6, 0.2, 3.6]} />
           <meshPhysicalMaterial color="#334155" metalness={0.7} roughness={0.4} />
         </mesh>
-        <EdgeStrip width={3.6} depth={3.6} color="#06B6D4" />
+        <EdgeStrip width={3.6} depth={3.6} color="#2B5CE6" />
         <Label text="VRM Array" index={1} />
       </group>
       

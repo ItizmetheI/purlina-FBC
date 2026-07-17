@@ -14,9 +14,11 @@ function Word({ word, index, total, progress }: {
   const opacity = useTransform(progress, [start, end], [0, 1]);
   const y = useTransform(progress, [start, end], [26, 0]);
   return (
-    <motion.span style={{ opacity, y }} className="inline-block mr-[0.26em]">
-      {word}
-    </motion.span>
+    <>
+      <motion.span style={{ opacity, y }} className="inline-block">
+        {word}
+      </motion.span>{' '}
+    </>
   );
 }
 

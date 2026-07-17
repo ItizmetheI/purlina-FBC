@@ -42,7 +42,7 @@ export default function Efficiency() {
               </p>
             </motion.div>
 
-            <motion.div variants={itemVariants} className="flex flex-col gap-8 p-10 bg-gradient-to-br from-cyan-950/40 to-transparent border border-brand-cyan/30 rounded-lg">
+            <motion.div variants={itemVariants} className="flex flex-col gap-8 p-10 bg-gradient-to-br from-blue-950/40 to-transparent border border-brand-cyan/30 rounded-lg">
               <p className="text-slate-200 leading-relaxed text-lg font-light">
                 {t(
                   <><strong className="text-brand-cyan font-bold">AO (Nörolojik Koruyucu Katman) Takviyeli Versiyon:</strong> Fenolik, aminik veya fosfit bazlı antioksidan sistemler içerir. Sürekli yüksek termal döngü altında oksidatif zincir reaksiyonlarını baskılar. Viskozite değişimini önler, tortu oluşumunu engeller ve sıvı ömrünü uzatır.</>,

@@ -77,7 +77,7 @@ export default function PuritySlider() {
               <path d="M30 10 L30 30 C30 40 10 50 10 70 L10 180 C10 190 20 200 50 200 C80 200 90 190 90 180 L90 70 C90 50 70 40 70 30 L70 10 Z" fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="4" />
               <rect x="25" y="0" width="50" height="15" rx="2" fill="#1e3a8a" />
             </svg>
-            <div className="absolute bottom-2 left-[12%] right-[12%] h-[65%] bg-gradient-to-b from-blue-400/20 to-cyan-300/30 rounded-b-2xl border-t border-white/40 backdrop-blur-sm" style={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' }}></div>
+            <div className="absolute bottom-2 left-[12%] right-[12%] h-[65%] bg-gradient-to-b from-blue-400/20 to-blue-300/30 rounded-b-2xl border-t border-white/40 backdrop-blur-sm" style={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' }}></div>
           </div>
         </div>
 

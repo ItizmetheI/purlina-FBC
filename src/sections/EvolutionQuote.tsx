@@ -54,18 +54,18 @@ export default function EvolutionQuote() {
                 initial={{ top: "-10%" }}
                 animate={{ top: "110%" }}
                 transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-                className="absolute left-0 right-0 h-1 bg-brand-cyan shadow-[0_0_10px_rgba(6,182,212,1)]"
+                className="absolute left-0 right-0 h-1 bg-brand-cyan shadow-[0_0_10px_rgba(43,92,230,1)]"
               />
             </motion.div>
           )}
-            <svg viewBox="0 0 200 200" className="w-full h-full drop-shadow-[0_0_30px_rgba(6,182,212,0.3)]">
+            <svg viewBox="0 0 200 200" className="w-full h-full drop-shadow-[0_0_30px_rgba(43,92,230,0.3)]">
               <defs>
                 <linearGradient id="tankGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stopColor="#0f172a" />
                   <stop offset="100%" stopColor="#020617" />
                 </linearGradient>
                 <linearGradient id="fluidGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="rgba(6,182,212,0.8)" />
+                  <stop offset="0%" stopColor="rgba(43,92,230,0.8)" />
                   <stop offset="100%" stopColor="rgba(59,130,246,0.5)" />
                 </linearGradient>
                 <linearGradient id="serverGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -90,7 +90,7 @@ export default function EvolutionQuote() {
                   <polygon points="95,42.5 100,40 100,80 95,82.5" fill={scanMode ? "#0ea5e9" : "#0f172a"} stroke="#475569" strokeWidth="0.5" className="transition-colors duration-500 delay-100" />
                   <polygon points="100,40 105,42.5 95,47.5 90,45" fill="#1e293b" />
                   {/* Server lights */}
-                  <circle cx="102" cy="45" r="0.8" fill="#06B6D4" />
+                  <circle cx="102" cy="45" r="0.8" fill="#2B5CE6" />
                   <circle cx="102" cy="48" r="0.8" fill="#3b82f6" />
                 </g>
               ))}
@@ -170,23 +170,23 @@ export default function EvolutionQuote() {
 
           {/* HTML Labels */}
           {/* Servers */}
-          <motion.div variants={labelVariants} className="absolute left-[14.28%] top-[35%] -translate-y-1/2 -translate-x-[110%] text-right hidden md:block">
+          <motion.div variants={labelVariants} className="absolute left-[14.28%] top-[35%] -translate-y-1/2 -translate-x-[110%] text-right max-md:hidden">
             <span className="font-mono text-white text-sm md:text-base tracking-widest uppercase">Servers</span>
           </motion.div>
           {/* Pod */}
-          <motion.div variants={labelVariants} className="absolute left-[14.28%] top-[60%] -translate-y-1/2 -translate-x-[110%] text-right hidden md:block">
+          <motion.div variants={labelVariants} className="absolute left-[14.28%] top-[60%] -translate-y-1/2 -translate-x-[110%] text-right max-md:hidden">
             <span className="font-mono text-white text-sm md:text-base tracking-widest uppercase">Pod</span>
           </motion.div>
           {/* CDU */}
-          <motion.div variants={labelVariants} className="absolute left-[85.7%] top-[35%] -translate-y-1/2 translate-x-[10%] text-left hidden md:block">
+          <motion.div variants={labelVariants} className="absolute left-[85.7%] top-[35%] -translate-y-1/2 translate-x-[10%] text-left max-md:hidden">
             <span className="font-mono text-white text-sm md:text-base tracking-widest uppercase">CDU</span>
           </motion.div>
           {/* Hot Water */}
-          <motion.div variants={labelVariants} className="absolute left-[85.7%] top-[50%] -translate-y-1/2 translate-x-[10%] text-left hidden md:block">
+          <motion.div variants={labelVariants} className="absolute left-[85.7%] top-[50%] -translate-y-1/2 translate-x-[10%] text-left max-md:hidden">
             <span className="font-mono text-red-400 text-xs md:text-sm tracking-widest uppercase whitespace-nowrap">Hot Water Outlet</span>
           </motion.div>
           {/* Cold Water */}
-          <motion.div variants={labelVariants} className="absolute left-[85.7%] top-[62.5%] -translate-y-1/2 translate-x-[10%] text-left hidden md:block">
+          <motion.div variants={labelVariants} className="absolute left-[85.7%] top-[62.5%] -translate-y-1/2 translate-x-[10%] text-left max-md:hidden">
             <span className="font-mono text-brand-cyan text-xs md:text-sm tracking-widest uppercase whitespace-nowrap">Cold Water Inlet</span>
           </motion.div>
 
