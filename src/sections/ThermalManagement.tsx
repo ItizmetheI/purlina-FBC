@@ -31,8 +31,8 @@ export default function ThermalManagement() {
 
             <p className="text-xl md:text-2xl text-slate-300 font-light leading-relaxed text-center">
               {t(
-                <>Dijital dönüşümün ilk evresinde veri konuşuldu, ikinci evresinde hız ve işlem gücü. Bugün ise üçüncü evreye geçilmiş durumda: <strong className="text-white font-medium drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">ısı yönetimi</strong>.</>,
-                <>In the first phase of digital transformation, data was the focus; in the second phase, speed and computing power. Today, we have entered the third phase: <strong className="text-white font-medium drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">thermal management</strong>.</>
+                <>Dijital dönüşümün ilk evresinde veri konuşuldu, ikinci evresinde hız ve işlem gücü. Bugün ise üçüncü evreye geçilmiş durumda: <strong className="text-white font-medium cine-ink">ısı yönetimi</strong>.</>,
+                <>In the first phase of digital transformation, data was the focus; in the second phase, speed and computing power. Today, we have entered the third phase: <strong className="text-white font-medium cine-ink">thermal management</strong>.</>
               )}
             </p>
           </motion.div>
@@ -64,7 +64,7 @@ export default function ThermalManagement() {
             <div className="relative z-10 p-12 bg-[#020617]/85 backdrop-blur-md border-l-2 border-l-brand-cyan shadow-[0_20px_40px_rgba(0,0,0,0.5)] overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-brand-cyan to-transparent"></div>
 
-              <strong className="text-white font-display text-3xl md:text-4xl tracking-tight block mb-6 drop-shadow-lg">PURLINA MATRIX CORE</strong>
+              <strong className="text-white font-display text-3xl md:text-4xl tracking-tight block mb-6 cine-ink">PURLINA MATRIX CORE</strong>
               <p className="text-slate-200 text-xl leading-relaxed m-0 font-light">
                 {t(
                   <>bu yeni mimarinin merkezinde yer alan dielectric termal platformdur. <strong className="text-white font-medium">Bu bir soğutma sıvısı değildir; işlemcilerin çalıştığı kararlı ortamdır.</strong></>,

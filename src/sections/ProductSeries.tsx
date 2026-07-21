@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useLang } from '../lib/lang';
 import SectionHeader from '../components/SectionHeader';
+import { Badge } from '../components/ui/badge';
 
 export default function ProductSeries() {
   const { t } = useLang();
@@ -81,7 +82,11 @@ export default function ProductSeries() {
               >
                 {/* Hover gradient reveal */}
                 <div className="absolute inset-0 bg-gradient-to-br from-brand-cyan/20 to-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out mix-blend-overlay"></div>
-                
+
+                <Badge variant="outline" className="absolute top-4 left-4 z-10 font-mono tracking-widest border-brand-cyan/40 bg-brand-cyan/10 text-brand-cyan">
+                  {item.name}
+                </Badge>
+
                 {/* Vial Graphic */}
                 <div className="w-16 h-32 rounded-full border-2 border-white/10 mb-6 relative overflow-hidden flex flex-col justify-end p-[3px] transition-colors duration-500 group-hover:border-brand-cyan/50 shadow-[inset_0_0_20px_rgba(255,255,255,0.02)] z-10">
                   <div className="w-full bg-gradient-to-t from-blue-700 to-brand-cyan rounded-full transition-all duration-1000 ease-out opacity-60 group-hover:opacity-100" style={{ height: `${60 + i * 15}%` }} />
@@ -110,18 +115,18 @@ export default function ProductSeries() {
               <table className="w-full text-left border-collapse min-w-[800px]">
                 <thead>
                   <tr className="border-b border-white/20">
-                    <th className="py-4 px-4 text-white font-medium text-lg">{t('Türü', 'Type')}</th>
-                    <th className={`py-4 px-4 text-center font-bold text-xl transition-colors duration-300 ${hoveredSeries === "X1" ? "text-brand-cyan bg-brand-cyan/10 rounded-t-xl" : "text-brand-cyan"}`}>X1</th>
-                    <th className={`py-4 px-4 text-center font-bold text-xl transition-colors duration-300 ${hoveredSeries === "X2" ? "text-brand-cyan bg-brand-cyan/10 rounded-t-xl" : "text-brand-cyan"}`}>X2</th>
-                    <th className={`py-4 px-4 text-center font-bold text-xl transition-colors duration-300 ${hoveredSeries === "X3" ? "text-brand-cyan bg-brand-cyan/10 rounded-t-xl" : "text-brand-cyan"}`}>X3</th>
+                    <th className="sticky top-0 z-10 py-4 px-4 text-white font-medium text-lg bg-[#0b1120]/90 backdrop-blur-sm">{t('Türü', 'Type')}</th>
+                    <th className={`sticky top-0 z-10 py-4 px-4 text-center font-bold text-xl transition-colors duration-300 bg-[#0b1120]/90 backdrop-blur-sm ${hoveredSeries === "X1" ? "text-brand-cyan bg-brand-cyan/10 rounded-t-xl" : "text-brand-cyan"}`}>X1</th>
+                    <th className={`sticky top-0 z-10 py-4 px-4 text-center font-bold text-xl transition-colors duration-300 bg-[#0b1120]/90 backdrop-blur-sm ${hoveredSeries === "X2" ? "text-brand-cyan bg-brand-cyan/10 rounded-t-xl" : "text-brand-cyan"}`}>X2</th>
+                    <th className={`sticky top-0 z-10 py-4 px-4 text-center font-bold text-xl transition-colors duration-300 bg-[#0b1120]/90 backdrop-blur-sm ${hoveredSeries === "X3" ? "text-brand-cyan bg-brand-cyan/10 rounded-t-xl" : "text-brand-cyan"}`}>X3</th>
                   </tr>
                 </thead>
                 <tbody>
                   {tableData.map((row, idx) => (
-                    <tr key={idx} className="border-b border-white/10 hover:bg-white/5 transition-colors">
-                      <td className="py-4 px-4 text-slate-300 font-light flex justify-between">
+                    <tr key={idx} className={`border-b border-white/10 hover:bg-white/5 transition-colors ${idx % 2 === 0 ? 'bg-white/[0.02]' : ''}`}>
+                      <td className="py-4 px-4 text-slate-300 font-light flex justify-between items-baseline">
                         <span>{t(row.tr, row.en)}</span>
-                        <span className="text-slate-500 ml-4">{row.unit}</span>
+                        {row.unit && <Badge variant="outline" className="ml-4 font-mono border-white/15 bg-white/5 text-slate-400">{row.unit}</Badge>}
                       </td>
                       <td className={`py-4 px-4 text-center font-mono transition-colors duration-300 ${hoveredSeries === "X1" ? "text-brand-cyan bg-brand-cyan/10" : "text-white"}`}>{row.x1}</td>
                       <td className={`py-4 px-4 text-center font-mono transition-colors duration-300 ${hoveredSeries === "X2" ? "text-brand-cyan bg-brand-cyan/10" : "text-white"}`}>{row.x2}</td>
@@ -130,6 +135,13 @@ export default function ProductSeries() {
                   ))}
                 </tbody>
               </table>
+            </div>
+            {/* legend: unit tokens already present in the table data — no new facts */}
+            <div className="mt-6 flex flex-wrap items-center gap-2 text-slate-500 text-sm font-light">
+              <span className="kicker !tracking-[0.2em]">{t('BİRİMLER', 'UNITS')}</span>
+              {[...new Set(tableData.map((r) => r.unit).filter(Boolean))].map((unit) => (
+                <Badge key={unit} variant="outline" className="font-mono border-white/15 bg-white/5 text-slate-400">{unit}</Badge>
+              ))}
             </div>
             <div className="mt-6 text-slate-500 text-sm font-light">
               <p>{t(

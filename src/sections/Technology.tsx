@@ -12,7 +12,9 @@ export default function Technology() {
     offset: ["start start", "end end"]
   });
 
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "calc(-100% + 100vw)"]);
+  // both endpoints must share the same calc() template — framer can't interpolate
+  // "0%" -> "calc(-100% + 100vw)" (mismatched templates snap instead of animating)
+  const x = useTransform(scrollYProgress, [0, 1], ["calc(0% + 0vw)", "calc(-100% + 100vw)"]);
 
   const benefits = [
     { icon: <VolumeX size={40} />, title: "Lower noise", titleTr: "Daha az gürültü" },
@@ -28,7 +30,7 @@ export default function Technology() {
   ];
 
   return (
-    <section ref={containerRef} className="relative h-[350vh] z-10 pointer-events-none">
+    <section ref={containerRef} className="relative h-[350vh] z-10 pointer-events-none overflow-x-hidden">
       <div className="sticky top-0 h-screen flex flex-col justify-center gap-10 w-full pointer-events-auto overflow-hidden">
 
         {/* compact header — the whole beat must fit one pinned viewport */}

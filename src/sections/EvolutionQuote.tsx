@@ -5,19 +5,20 @@ import { useLang } from '../lib/lang';
 export default function EvolutionQuote() {
   const [scanMode, setScanMode] = useState(false);
   const { t } = useLang();
+  const ease = [0.16, 1, 0.3, 1] as const;
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
   };
-  
+
   const pathVariants = {
     hidden: { pathLength: 0, opacity: 0 },
-    visible: { pathLength: 1, opacity: 1, transition: { duration: 1.5, ease: "easeInOut" as const } }
+    visible: { pathLength: 1, opacity: 1, transition: { duration: 1.2, ease: "easeInOut" as const } }
   };
-  
+
   const labelVariants = {
     hidden: { opacity: 0, y: 10 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease } }
   };
 
   return (
@@ -28,7 +29,8 @@ export default function EvolutionQuote() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1 }}
+          transition={{ duration: 0.8, ease }}
+          className="cine-ink"
         >
           <h2 className="text-4xl md:text-6xl font-display font-medium text-white mb-2 leading-tight">{t('Soğutmanın Değil,', 'Not Just Cooling,')}</h2>
           <h2 className="text-4xl md:text-6xl font-display font-medium text-white leading-tight">{t('Evrimin Kararlı Ortamı', 'But a Stable Environment for Evolution')}</h2>
@@ -127,6 +129,7 @@ export default function EvolutionQuote() {
               fill="none" 
               stroke="rgba(255,255,255,0.3)" 
               strokeWidth="1" 
+              vectorEffect="non-scaling-stroke"
               variants={pathVariants} 
               className="hidden md:block"
             />
@@ -136,6 +139,7 @@ export default function EvolutionQuote() {
               fill="none" 
               stroke="rgba(255,255,255,0.3)" 
               strokeWidth="1" 
+              vectorEffect="non-scaling-stroke"
               variants={pathVariants} 
               className="hidden md:block"
             />
@@ -145,6 +149,7 @@ export default function EvolutionQuote() {
               fill="none" 
               stroke="rgba(255,255,255,0.3)" 
               strokeWidth="1" 
+              vectorEffect="non-scaling-stroke"
               variants={pathVariants} 
               className="hidden md:block"
             />
@@ -154,6 +159,7 @@ export default function EvolutionQuote() {
               fill="none" 
               stroke="rgba(239, 68, 68, 0.4)" 
               strokeWidth="1" 
+              vectorEffect="non-scaling-stroke"
               variants={pathVariants} 
               className="hidden md:block"
             />
@@ -163,6 +169,7 @@ export default function EvolutionQuote() {
               fill="none" 
               stroke="rgba(59, 130, 246, 0.4)" 
               strokeWidth="1" 
+              vectorEffect="non-scaling-stroke"
               variants={pathVariants} 
               className="hidden md:block"
             />

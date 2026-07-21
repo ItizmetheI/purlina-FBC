@@ -1,11 +1,13 @@
 import { Mail, Phone, MapPin, Globe, Linkedin } from 'lucide-react';
-import { Wordmark } from '../components/Header';
+import { useLenis } from 'lenis/react';
+import { Wordmark, NAV } from '../components/Header';
 import { useLang } from '../lib/lang';
 
 export default function Footer() {
   const { t } = useLang();
+  const lenis = useLenis();
   return (
-    <footer className="relative pt-[60vh] pb-12 px-4 md:px-8 z-10 bg-gradient-to-b from-transparent via-[#020617]/70 to-[#020617]">
+    <footer className="relative pt-[calc(60vh+6rem)] pb-12 px-4 md:px-8 z-10 bg-gradient-to-b from-transparent via-[#020617]/70 to-[#020617]">
       <div className="max-w-7xl mx-auto w-full pointer-events-auto flex flex-col items-center text-center">
         <h2 className="text-3xl md:text-5xl font-display font-bold text-white mb-16">
           {t('Geleceği işleyen kararlı ortam.', 'The Stable Environment Processing the Future.')}
@@ -15,7 +17,25 @@ export default function Footer() {
           <Wordmark />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 w-full mt-8 border-t border-white/10 pt-16 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 w-full mt-8 border-t border-white/10 pt-16 mb-16">
+          <div className="flex flex-col items-center md:items-start text-center md:text-left gap-3">
+            <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-brand-cyan mb-2">
+              {t('Site Haritası', 'Site Map')}
+            </span>
+            {NAV.map((n) => (
+              <button
+                key={n.id}
+                data-cursor="hover"
+                onClick={() =>
+                  lenis?.scrollTo(`#${n.id}`, { duration: 2, easing: (x: number) => 1 - Math.pow(1 - x, 4) })
+                }
+                className="text-slate-300 font-light hover:text-brand-cyan transition-colors text-left"
+              >
+                {t(n.tr, n.en)}
+              </button>
+            ))}
+          </div>
+
           <div className="flex flex-col items-center md:items-start text-center md:text-left gap-4 text-slate-300 font-light">
             <MapPin className="w-6 h-6 text-brand-cyan" />
             <p className="max-w-xs">

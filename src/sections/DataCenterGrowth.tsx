@@ -7,12 +7,12 @@ export default function DataCenterGrowth() {
   const { t } = useLang();
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
   };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as const } }
   };
 
   // 2010 to 2029 data
@@ -104,7 +104,7 @@ export default function DataCenterGrowth() {
                   initial={{ height: 0 }}
                   whileInView={{ height: `${(val / 405) * 100}%` }}
                   viewport={{ once: true }}
-                  transition={{ duration: 1, delay: idx * 0.05 }}
+                  transition={{ duration: 0.8, delay: idx * 0.04, ease: [0.16, 1, 0.3, 1] }}
                 >
                   <div className="opacity-0 group-hover:opacity-100 absolute -top-8 left-1/2 -translate-x-1/2 text-xs text-white bg-slate-800 px-2 py-1 rounded transition-opacity hidden md:block whitespace-nowrap">
                     {val} ZB

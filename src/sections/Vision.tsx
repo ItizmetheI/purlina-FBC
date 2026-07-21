@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Droplet, Truck, Warehouse, TrendingUp } from 'lucide-react';
 import { useLang } from '../lib/lang';
 import SectionHeader from '../components/SectionHeader';
+import { Badge } from '../components/ui/badge';
 
 export default function Vision() {
   const { t } = useLang();
@@ -65,16 +66,25 @@ export default function Vision() {
             <h3 className="text-3xl font-display font-bold text-white mb-12">
               {t('Operasyonel Gücümüz', 'Our Operational Power')}
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-              {stats.map((stat, i) => (
-                <div key={i} className="flex flex-col gap-4 group">
-                  <div className="mb-2 transition-transform duration-500 group-hover:-translate-y-2">
-                    {stat.icon}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {stats.map((stat, i) => {
+                // split "52.000 Ton" → number + unit badge; the ' ' text node keeps
+                // the verbatim string intact in textContent for spec-check.mjs
+                const [num, ...rest] = stat.value.split(' ');
+                const unit = rest.join(' ');
+                return (
+                  <div key={i} className="flex flex-col gap-4 group panel p-6 hover:bg-white/[0.06] hover:border-brand-cyan/40 transition-colors">
+                    <div className="mb-2 transition-transform duration-500 group-hover:-translate-y-2">
+                      {stat.icon}
+                    </div>
+                    <h4 className="text-3xl font-display font-bold text-white tracking-tight tabular-nums flex items-baseline flex-wrap gap-2">
+                      {num}{unit && ' '}
+                      {unit && <Badge variant="outline" className="font-mono text-sm border-white/15 bg-white/5 text-slate-300">{unit}</Badge>}
+                    </h4>
+                    <p className="text-sm text-slate-300 font-medium mt-auto">{stat.label}</p>
                   </div>
-                  <h4 className="text-3xl font-display font-bold text-white tracking-tight">{stat.value}</h4>
-                  <p className="text-sm text-slate-300 font-medium">{stat.label}</p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </motion.div>
 

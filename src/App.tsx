@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import Hero from './sections/Hero';
 import EvolutionQuote from './sections/EvolutionQuote';
 import TableOfContents from './sections/TableOfContents';
@@ -19,7 +19,7 @@ import Scene from './canvas/Scene';
 import BackdropFilm from './canvas/BackdropFilm';
 import ParticleOverlay from './canvas/ParticleOverlay';
 import SmoothScroll from './components/SmoothScroll';
-import CustomCursor from './components/CustomCursor';
+import Loader from './components/Loader';
 import SystemHUD from './components/SystemHUD';
 import ThesisMoment from './sections/ThesisMoment';
 import { useDiveEngine } from './utils/dive';
@@ -28,53 +28,6 @@ import Header from './components/Header';
 import ActRail from './components/ActRail';
 import Cine from './components/Cine';
 import BreachFlash from './components/BreachFlash';
-
-function CinematicLoader() {
-  return (
-    <motion.div
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#020617] bg-grid"
-      exit={{ opacity: 0, y: -20, filter: 'blur(10px)' }}
-      transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-    >
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1, ease: 'easeOut' }}
-        className="flex flex-col items-center"
-      >
-        <div className="w-16 h-16 relative mb-8">
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
-            className="absolute inset-0 border-t-2 border-brand-cyan rounded-full"
-          />
-          <motion.div
-            animate={{ rotate: -360 }}
-            transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
-            className="absolute inset-2 border-b-2 border-blue-500 rounded-full opacity-50"
-          />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
-          </div>
-        </div>
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="text-brand-cyan font-mono text-xs tracking-[0.5em] uppercase"
-        >
-          Initializing Matrix Core
-        </motion.div>
-        <motion.div
-          initial={{ width: 0 }}
-          animate={{ width: 200 }}
-          transition={{ delay: 0.4, duration: 0.8, ease: 'easeInOut' }}
-          className="h-[1px] bg-gradient-to-r from-transparent via-brand-cyan to-transparent mt-4"
-        />
-      </motion.div>
-    </motion.div>
-  );
-}
 
 function EngineMount() {
   useDiveEngine();
@@ -109,7 +62,6 @@ export default function App() {
   return (
     <LangProvider>
     <SmoothScroll>
-      <CustomCursor />
       <Header />
       <ActRail />
       <SystemHUD />
@@ -117,7 +69,7 @@ export default function App() {
       <EngineMount />
       <main className="relative min-h-screen bg-[#020617] bg-grid selection:bg-brand-cyan/30 font-sans">
         <AnimatePresence>
-          {loading && <CinematicLoader />}
+          {loading && <Loader />}
         </AnimatePresence>
 
         {/* Cockpit bezel — the whole experience sits inside an instrument frame */}

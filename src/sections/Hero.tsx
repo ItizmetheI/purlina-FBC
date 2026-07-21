@@ -28,9 +28,9 @@ export default function Hero() {
           transition={{ duration: 1, delay: 0.2, ease }}
           className="flex items-baseline gap-4 mb-8"
         >
-          <span className="kicker">01</span>
-          <span className="kicker text-slate-500">/</span>
-          <span className="kicker">
+          <span className="kicker kicker-glow">01</span>
+          <span className="kicker text-slate-400">/</span>
+          <span className="kicker kicker-glow">
             {t('YAPAY ZEKÂ VERİ MERKEZLERİ İÇİN DIELECTRIC IMMERSION SOĞUTMA PLATFORMU', 'DIELECTRIC IMMERSION COOLING PLATFORM FOR AI DATA CENTERS')}
           </span>
         </motion.div>
@@ -60,7 +60,7 @@ export default function Hero() {
           transition={{ duration: 1.2, delay: 0.8, ease }}
         >
           <Magnetic strength={0.4}>
-            <button onClick={handleExploreClick} data-cursor="hover" className="group relative px-8 py-4 border border-white/20 rounded-full overflow-hidden transition-colors hover:border-brand-cyan/60">
+            <button onClick={handleExploreClick} data-cursor="hover" className="group relative px-8 py-4 border border-white/20 rounded-full overflow-hidden transition-colors hover:border-brand-cyan/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-cyan/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#020617]">
               <div className="absolute inset-0 bg-brand-cyan/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
               <span className="relative z-10 text-white font-mono tracking-widest text-xs uppercase flex items-center gap-4">
                 {t('Dalışı Başlat', 'Begin the Dive')}
@@ -70,18 +70,7 @@ export default function Hero() {
           </Magnetic>
         </motion.div>
       </div>
-
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.5, repeat: Infinity, repeatType: 'reverse' }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 pointer-events-auto"
-      >
-        <span className="text-[10px] text-white/50 font-mono tracking-[0.3em] uppercase">
-          {t('KEŞFETMEK İÇİN KAYDIR', 'SCROLL TO EXPLORE')}
-        </span>
-        <div className="w-px h-12 bg-gradient-to-b from-white/50 to-transparent"></div>
-      </motion.div>
+      {/* scroll cue lives in the shared ScrollHint component (mounted via Header) */}
     </section>
   );
 }

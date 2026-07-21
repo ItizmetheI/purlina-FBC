@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
+import { motion, useScroll, useTransform, useMotionTemplate, MotionValue } from 'framer-motion';
 
 // The one section voice — scrubbed by scroll, not played by time.
 // Words surface one by one as the film advances (and reverse when you
@@ -37,14 +37,24 @@ export default function SectionHeader({ no, kicker, title, className = '' }: {
   const titleY = useTransform(scrollYProgress, [0, 0.5, 1], [36, 0, -36]);
   const ruleScale = useTransform(scrollYProgress, [0.15, 0.45], [0, 1]);
 
+  // the whole block advances WITH the camera push: subtle scale + a blur
+  // that resolves on entry — same scroll clock as everything else
+  const blockScale = useTransform(scrollYProgress, [0, 1], [0.96, 1.04]);
+  const blockBlur = useTransform(scrollYProgress, [0.05, 0.28], [6, 0]);
+  const blockFilter = useMotionTemplate`blur(${blockBlur}px)`;
+
   const words = typeof title === 'string' ? title.split(' ') : null;
 
   return (
-    <div ref={ref} className={`mb-14 ${className}`}>
+    <motion.div
+      ref={ref}
+      style={{ scale: blockScale, filter: blockFilter, transformOrigin: 'left center' }}
+      className={`mb-14 cine-ink ${className}`}
+    >
       <motion.div style={{ y: kickerY, opacity: kickerOpacity }} className="flex items-baseline gap-4 mb-4">
-        <span className="kicker">{no}</span>
+        <span className="kicker kicker-glow">{no}</span>
         <span className="kicker text-slate-500">/</span>
-        <span className="kicker">{kicker}</span>
+        <span className="kicker kicker-glow">{kicker}</span>
       </motion.div>
       <motion.h2 style={{ y: titleY }} className="text-4xl md:text-6xl font-display font-bold text-white leading-[1.05] max-w-4xl">
         {words
@@ -54,6 +64,6 @@ export default function SectionHeader({ no, kicker, title, className = '' }: {
           : title}
       </motion.h2>
       <motion.div style={{ scaleX: ruleScale }} className="rule mt-8 origin-left" />
-    </div>
+    </motion.div>
   );
 }

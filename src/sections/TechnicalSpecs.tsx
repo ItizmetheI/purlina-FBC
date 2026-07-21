@@ -3,6 +3,59 @@ import { motion } from 'framer-motion';
 import PuritySlider from '../components/PuritySlider';
 import { useLang } from '../lib/lang';
 import SectionHeader from '../components/SectionHeader';
+import { Badge } from '../components/ui/badge';
+import { Separator } from '../components/ui/separator';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../components/ui/tooltip';
+
+// spec rows keep tr/en separately so the tooltip can show the OTHER language's
+// exact string (zero new content). val+sep+unit concatenate back to the
+// verbatim brochure value in textContent — spec-check.mjs greps for it.
+type SpecRow = { tr: string; en: string; val: string; sep: '' | ' '; unit: string };
+
+const ELECTRICAL: SpecRow[] = [
+  { tr: 'Dielectric breakdown voltajı', en: 'Dielectric breakdown voltage', val: '>35', sep: ' ', unit: 'kV' },
+  { tr: 'Elektriksel direnç', en: 'Electrical resistivity', val: '>10¹²', sep: ' ', unit: 'Ω·m' },
+  { tr: 'Asit sayısı', en: 'Acid number', val: '<0.01', sep: ' ', unit: 'mgKOH/g' },
+];
+
+const THERMAL: SpecRow[] = [
+  { tr: 'Özgül ısı kapasitesi', en: 'Specific heat capacity', val: '~2.0', sep: ' ', unit: 'kJ/kgK' },
+  { tr: 'Termal iletkenlik', en: 'Thermal conductivity', val: '~0.13', sep: ' ', unit: 'W/mK' },
+  { tr: 'Parlama noktası', en: 'Flash point', val: '240–265', sep: '', unit: '°C' },
+];
+
+function SpecTable({ title, rows }: { title: string; rows: SpecRow[] }) {
+  const { t } = useLang();
+  return (
+    <div className="panel p-8 transition-colors duration-500 hover:border-brand-cyan/40">
+      <h3 className="text-2xl font-display font-semibold text-white mb-6">{title}</h3>
+      <Separator className="bg-white/10 mb-2" />
+      <div>
+        {rows.map((row, i) => (
+          <div key={i}>
+            {i > 0 && <Separator className="bg-white/10" />}
+            <div className="flex flex-col md:flex-row justify-between md:items-baseline py-4 px-2 gap-2 transition-colors hover:bg-white/[0.05]">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span className="text-slate-300 text-lg cursor-help underline decoration-dotted decoration-white/25 underline-offset-4">
+                    {t(row.tr, row.en)}
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent className="border border-white/10 font-light">
+                  {t(row.en, row.tr)}
+                </TooltipContent>
+              </Tooltip>
+              <span className="inline-flex items-baseline gap-2">
+                <span className="font-mono text-xl text-white font-semibold tabular-nums text-right">{row.val}{row.sep}</span>
+                <Badge variant="outline" className="font-mono border-white/15 bg-white/5 text-slate-300">{row.unit}</Badge>
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function TechnicalSpecs() {
   const { t } = useLang();
@@ -74,59 +127,24 @@ export default function TechnicalSpecs() {
               <div className="rule mt-8" />
             </div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              {/* Electrical Properties */}
-              <div className="bg-white/5 border border-white/10 p-8 rounded-lg">
-                <h3 className="text-2xl font-display font-semibold text-white mb-8 border-b border-white/10 pb-4">
-                  {t('Elektriksel Özellikler', 'Electrical Properties')}
-                </h3>
-
-                <div className="space-y-2">
-                  {[
-                    { label: t('Dielectric breakdown voltajı', 'Dielectric breakdown voltage'), value: '>35 kV' },
-                    { label: t('Elektriksel direnç', 'Electrical resistivity'), value: '>10¹² Ω·m' },
-                    { label: t('Asit sayısı', 'Acid number'), value: '<0.01 mgKOH/g' },
-                  ].map((row, i) => (
-                    <div key={i} className={`flex flex-col md:flex-row justify-between md:items-center py-4 px-4 rounded-xl gap-2 ${i % 2 === 0 ? 'bg-black/20' : ''}`}>
-                      <span className="text-slate-300 text-lg">{row.label}</span>
-                      <span className="font-mono text-xl text-white font-semibold">{row.value}</span>
-                    </div>
-                  ))}
-                </div>
+            <TooltipProvider>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <SpecTable title={t('Elektriksel Özellikler', 'Electrical Properties')} rows={ELECTRICAL} />
+                <SpecTable title={t('Termal Özellikler', 'Thermal Properties')} rows={THERMAL} />
               </div>
-
-              {/* Thermal Properties */}
-              <div className="bg-white/5 border border-white/10 p-8 rounded-lg">
-                <h3 className="text-2xl font-display font-semibold text-white mb-8 border-b border-white/10 pb-4">
-                  {t('Termal Özellikler', 'Thermal Properties')}
-                </h3>
-
-                <div className="space-y-2">
-                  {[
-                    { label: t('Özgül ısı kapasitesi', 'Specific heat capacity'), value: '~2.0 kJ/kgK' },
-                    { label: t('Termal iletkenlik', 'Thermal conductivity'), value: '~0.13 W/mK' },
-                    { label: t('Parlama noktası', 'Flash point'), value: '240–265°C' },
-                  ].map((row, i) => (
-                    <div key={i} className={`flex flex-col md:flex-row justify-between md:items-center py-4 px-4 rounded-xl gap-2 ${i % 2 === 0 ? 'bg-black/20' : ''}`}>
-                      <span className="text-slate-300 text-lg">{row.label}</span>
-                      <span className="font-mono text-xl text-white font-semibold">{row.value}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+            </TooltipProvider>
           </motion.div>
 
           {/* Purity Comparison Visuals */}
           <motion.div variants={itemVariants} className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-12">
             
             {/* Bottle Comparison */}
-            <div className="bg-white/5 border border-white/10 p-8 rounded-lg flex flex-col items-center justify-center min-h-[400px]">
+            <div className="panel p-8 flex flex-col items-center justify-center min-h-[400px] transition-colors duration-500 hover:border-brand-cyan/40">
               <PuritySlider />
             </div>
 
             {/* Acid Number Chart */}
-            <div className="bg-white/5 border border-white/10 p-8 rounded-lg flex flex-col justify-center min-h-[400px]">
+            <div className="panel p-8 flex flex-col justify-center min-h-[400px] transition-colors duration-500 hover:border-brand-cyan/40">
               <div className="text-center mb-12">
                 <h4 className="text-2xl text-white font-medium mb-1">{t('Asit Sayısı', 'Acid Number')}</h4>
                 <p className="text-slate-400 text-sm">{t('(En az en iyisidir)', '(Lower is better)')}</p>

@@ -11,7 +11,7 @@
 }
 
 @layer base {
-  body {
+  html, body {
     @apply bg-[#020617] text-slate-300 antialiased overflow-x-hidden;
   }
 
@@ -28,6 +28,14 @@
 /* mono kicker above every section headline */
 .kicker {
   @apply font-mono text-[11px] tracking-[0.35em] uppercase text-brand-cyan;
+}
+/* layered ink shadow so type stays legible over live footage (inherits) */
+.cine-ink {
+  text-shadow: 0 1px 2px rgba(2, 6, 23, 0.9), 0 0 24px rgba(2, 6, 23, 0.6);
+}
+/* faint brand glow for the kicker riding over the film */
+.kicker-glow {
+  text-shadow: 0 1px 2px rgba(2, 6, 23, 0.9), 0 0 14px rgba(59, 109, 246, 0.55);
 }
 /* hairline rule that fades out to the right */
 .rule {

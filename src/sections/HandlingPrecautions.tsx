@@ -2,6 +2,8 @@ import { motion } from 'framer-motion';
 import { AlertTriangle } from 'lucide-react';
 import { useLang } from '../lib/lang';
 import SectionHeader from '../components/SectionHeader';
+import { Badge } from '../components/ui/badge';
+import { Separator } from '../components/ui/separator';
 
 // Safety copy mirrors brochure pages 13–14 verbatim — do not edit without
 // confirmation from ALKİM (incl. the X1 grade appearing in both blocks).
@@ -134,7 +136,16 @@ export default function HandlingPrecautions() {
             </motion.p>
 
             <motion.div variants={itemVariants} className="flex flex-col gap-10">
-              <h3 className="text-4xl font-display font-bold text-brand-cyan">{block.grade}</h3>
+              <div className="flex items-center gap-4">
+                <Badge variant="outline" className="font-display font-bold text-2xl px-5 py-1.5 tracking-widest border-brand-cyan/40 bg-brand-cyan/10 text-brand-cyan">
+                  {block.grade}
+                </Badge>
+                {block.danger && (
+                  <Badge variant="destructive" className="font-bold tracking-widest px-4 py-1.5 text-sm">
+                    {block.signal}
+                  </Badge>
+                )}
+              </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-6">
                 <div className="space-y-6 text-slate-300 font-light">
@@ -162,6 +173,7 @@ export default function HandlingPrecautions() {
                 <div className="flex flex-col gap-8">
                   {lists.map((list, li) => (
                     <div key={li} className="space-y-3 text-slate-300 font-light">
+                      {li > 0 && <Separator className="bg-white/10 mb-8" />}
                       <h4 className="text-xl font-bold text-white">{list.title}</h4>
                       <ul className="space-y-2">
                         {list.items.map((item, ii) => (

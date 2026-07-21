@@ -6,12 +6,12 @@ export default function ThermalEnvironment() {
   const { t } = useLang();
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
   };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as const } }
   };
 
   const traits = [
@@ -47,7 +47,7 @@ export default function ThermalEnvironment() {
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
             variants={containerVariants}
-            className="flex flex-col gap-10 lg:w-1/2 lg:ml-auto"
+            className="flex flex-col gap-10 lg:w-1/2 lg:max-w-xl lg:ml-auto lg:mr-16 cine-ink"
           >
             {/* text lane right — the exploding blade owns the left */}
             <SectionHeader

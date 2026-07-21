@@ -12,7 +12,7 @@ export default function TableOfContents() {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const } }
   };
 
   // dive itinerary — page numbers replaced with target depths
@@ -36,7 +36,7 @@ export default function TableOfContents() {
           variants={containerVariants}
           className="flex flex-col gap-12"
         >
-          <div className="mb-8">
+          <div>
             <motion.div variants={itemVariants} className="flex items-baseline gap-4 mb-4">
               <span className="kicker">02</span>
               <span className="kicker text-slate-500">/</span>
@@ -53,8 +53,16 @@ export default function TableOfContents() {
               <motion.div
                 key={idx}
                 variants={itemVariants}
+                role="button"
+                tabIndex={0}
                 onClick={() => lenis?.scrollTo(item.target, { duration: 2.2, easing: (x: number) => 1 - Math.pow(1 - x, 4) })}
-                className="flex justify-between items-end border-b border-white/10 pb-4 group gap-2 cursor-pointer transition-transform duration-300 hover:translate-x-2"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    lenis?.scrollTo(item.target, { duration: 2.2, easing: (x: number) => 1 - Math.pow(1 - x, 4) });
+                  }
+                }}
+                className="flex justify-between items-end border-b border-white/10 pb-4 group gap-2 cursor-pointer transition-transform duration-300 hover:translate-x-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-cyan/60 rounded-sm"
                 data-cursor="hover"
               >
                 <h4 className="text-xl md:text-2xl text-white font-medium group-hover:text-brand-cyan transition-colors max-w-[85%]">

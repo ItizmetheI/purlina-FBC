@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Cloud, Radio, Server, Building2, Microscope, Link } from 'lucide-react';
 import { useLang } from '../lib/lang';
 import SectionHeader from '../components/SectionHeader';
+import { Separator } from '../components/ui/separator';
 
 export default function Applications() {
   const { t } = useLang();
@@ -90,14 +91,19 @@ export default function Applications() {
               <motion.div 
                 key={i} 
                 variants={itemVariants}
-                className="p-10 panel flex flex-col hover:bg-white/10 transition-colors group"
+                className="p-10 panel flex flex-col hover:bg-white/10 hover:border-brand-cyan/40 transition-colors group"
               >
-                <div className="mb-8 w-16 h-16 rounded-2xl bg-black/40 border border-white/10 flex items-center justify-center text-brand-cyan shadow-[0_0_15px_rgba(59,130,246,0.2)] group-hover:scale-110 transition-transform duration-500">
-                  {app.icon}
+                <div className="flex items-center gap-5">
+                  <div className="w-14 h-14 shrink-0 rounded-2xl bg-black/40 border border-white/10 flex items-center justify-center text-brand-cyan shadow-[0_0_15px_rgba(59,130,246,0.2)] group-hover:scale-110 transition-transform duration-500">
+                    {app.icon}
+                  </div>
+                  <h3 className="text-white font-bold text-lg leading-snug">{t(app.titleTr, app.title)}</h3>
                 </div>
-                
+
+                <Separator className="bg-white/10 my-6" />
+
                 <p className="text-slate-300 text-base leading-relaxed font-light">
-                  <strong className="text-white font-bold">{t(app.titleTr, app.title)}</strong>{t(', ', ' ')}{t(app.descTr, app.desc)}
+                  {t(app.descTr, app.desc)}
                 </p>
               </motion.div>
             ))}

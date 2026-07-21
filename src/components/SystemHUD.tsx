@@ -10,6 +10,28 @@ function tempFor(t: number): number {
   return 34;                                      // stable environment
 }
 
+// Smooth blue → amber → red ramp so the readout never hard-flips color.
+const STOPS: [number, [number, number, number]][] = [
+  [48, [59, 109, 246]],  // #3b6df6
+  [62, [245, 158, 11]],  // #f59e0b
+  [82, [239, 68, 68]],   // #ef4444
+];
+function tempColor(temp: number): string {
+  let [r, g, b] = STOPS[0][1];
+  for (let i = 0; i < STOPS.length - 1; i++) {
+    const [t0, c0] = STOPS[i];
+    const [t1, c1] = STOPS[i + 1];
+    if (temp >= t1) { [r, g, b] = c1; continue; }
+    if (temp > t0) {
+      const k = (temp - t0) / (t1 - t0);
+      r = c0[0] + (c1[0] - c0[0]) * k;
+      g = c0[1] + (c1[1] - c0[1]) * k;
+      b = c0[2] + (c1[2] - c0[2]) * k;
+    }
+  }
+  return `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
+}
+
 export default function SystemHUD() {
   const tempRef = useRef<HTMLSpanElement>(null);
   const depthRef = useRef<HTMLSpanElement>(null);
@@ -25,10 +47,10 @@ export default function SystemHUD() {
       smoothTemp.current += (target - smoothTemp.current) * 0.06;
       const temp = smoothTemp.current;
 
+      const color = tempColor(temp);
       if (tempRef.current) {
         tempRef.current.textContent = `${temp.toFixed(1)}°C`;
-        tempRef.current.style.color =
-          temp > 80 ? '#ef4444' : temp > 50 ? '#f59e0b' : '#3b6df6';
+        tempRef.current.style.color = color;
       }
       if (depthRef.current) {
         depthRef.current.textContent = `-${String(Math.round(dive.depth)).padStart(2, '0')} M`;
@@ -36,8 +58,7 @@ export default function SystemHUD() {
       if (barRef.current) {
         const pct = Math.min(100, Math.max(4, ((temp - 30) / 65) * 100));
         barRef.current.style.width = `${pct}%`;
-        barRef.current.style.background =
-          temp > 80 ? '#ef4444' : temp > 50 ? '#f59e0b' : '#3b6df6';
+        barRef.current.style.background = color;
       }
       setAct((c) => (c !== dive.act ? dive.act : c));
       raf = requestAnimationFrame(tick);
@@ -48,8 +69,8 @@ export default function SystemHUD() {
 
   return (
     <>
-      {/* Dive computer — desktop only */}
-      <div className="fixed bottom-8 right-8 z-40 hidden md:flex flex-col gap-2 pointer-events-none select-none font-mono text-[10px] tracking-[0.2em] uppercase">
+      {/* Dive computer — desktop only; bows out before the footer contact block */}
+      <div className={`fixed bottom-6 right-6 z-40 hidden md:flex flex-col gap-2 pointer-events-none select-none font-mono text-[10px] tracking-[0.2em] uppercase transition-opacity duration-700 ${act >= 9 ? 'opacity-0' : 'opacity-100'}`}>
         <div className="border border-white/10 bg-[#020617]/70 backdrop-blur-md px-4 py-3 rounded-lg min-w-[190px]">
           <div className="flex justify-between items-baseline gap-4 mb-1">
             <span className="text-slate-500">Coolant</span>
@@ -72,7 +93,7 @@ export default function SystemHUD() {
       {/* Ghost act numeral — the film's chapter card */}
       <div
         key={act}
-        className="fixed bottom-4 left-6 z-[5] pointer-events-none select-none hidden md:block font-display font-bold leading-none animate-[hudFade_1.2s_ease-out]"
+        className={`fixed bottom-4 left-6 z-[5] pointer-events-none select-none hidden md:block font-display font-bold leading-none animate-[hudFade_1.2s_ease-out] transition-opacity duration-700 ${act >= 9 ? 'opacity-0' : 'opacity-100'}`}
         style={{
           fontSize: '16vh',
           color: 'transparent',
