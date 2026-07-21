@@ -96,7 +96,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed top-0 inset-x-0 z-40 flex items-center justify-between px-5 md:px-10 py-4 pointer-events-auto bg-gradient-to-b from-[#020617]/90 via-[#020617]/40 to-transparent">
+      <header className="fixed top-0 inset-x-0 z-40 flex items-center justify-between px-5 md:px-10 py-4 pointer-events-auto bg-[#020617]/85 backdrop-blur-xl border-b border-white/[0.06]">
         <Wordmark compact />
 
         {/* desktop nav — the 7 brochure sections */}

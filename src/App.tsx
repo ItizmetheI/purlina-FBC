@@ -101,27 +101,27 @@ export default function App() {
             <div data-act="1">
               <Cine><EvolutionQuote /></Cine>
               {/* travel beat — the scene alone as we cross the surface */}
-              <div className="h-[70vh]" aria-hidden />
+              <div className="h-[40vh]" aria-hidden />
             </div>
             <div data-act="2" id="toc-vision">
               <Cine><TableOfContents /></Cine>
-              <div className="h-[60vh]" aria-hidden />
+              <div className="h-[35vh]" aria-hidden />
               <Cine><Vision /></Cine>
-              <div className="h-[50vh]" aria-hidden />
+              <div className="h-[30vh]" aria-hidden />
             </div>
             <div data-act="3" id="toc-thermal">
               <ThermalManagement />
               <ThesisMoment />
               <Cine><DataCenterGrowth /></Cine>
               {/* travel beat — drifting along the burning racks */}
-              <div className="h-[70vh]" aria-hidden />
+              <div className="h-[40vh]" aria-hidden />
             </div>
             <div data-act="4" id="toc-technology">
               <Technology />
             </div>
             <div data-act="5" id="toc-core">
               {/* travel beat — approaching the blade */}
-              <div className="h-[50vh]" aria-hidden />
+              <div className="h-[30vh]" aria-hidden />
               <ThermalEnvironment />
             </div>
             <div data-act="6" id="toc-series">
@@ -133,7 +133,7 @@ export default function App() {
               <Cine><HandlingPrecautions /></Cine>
             </div>
             <div data-act="8" id="toc-advantages">
-              <div className="h-[50vh]" aria-hidden />
+              <div className="h-[30vh]" aria-hidden />
               <Cine><Efficiency /></Cine>
               <Cine><Advantages /></Cine>
               <div id="toc-applications">

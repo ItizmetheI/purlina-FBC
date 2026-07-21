@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { animate, stagger } from 'animejs';
 import { dive } from '../utils/dive';
 
 // The client's cinematic (10s, 4 scenes) scrubbed by scroll. Each act maps
@@ -35,8 +36,25 @@ export default function BackdropFilm({ onReady, onMissing }: { onReady?: () => v
   const backRef = useRef<HTMLVideoElement | null>(null);
   const frontRef = useRef<HTMLVideoElement | null>(null);
   const portalRef = useRef<HTMLDivElement | null>(null);
+  const pulseRef = useRef<HTMLDivElement | null>(null);
   const [failed, setFailed] = useState(false);
   const reduced = useRef(false);
+
+  // Depth-pulse ambient: fills the acts with no matching footage (a
+  // sonar-style probe sweep, on-theme with the dive HUD) so those beats
+  // read as a designed moment instead of dead air behind the copy.
+  useEffect(() => {
+    if (reduced.current || !pulseRef.current) return;
+    const rings = pulseRef.current.querySelectorAll<HTMLElement>('.pulse-ring');
+    animate(rings, {
+      scale: [0.5, 1.9],
+      opacity: [0.55, 0],
+      duration: 3200,
+      ease: 'outSine',
+      loop: true,
+      delay: stagger(1000),
+    });
+  }, []);
 
   useEffect(() => {
     reduced.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -97,6 +115,7 @@ export default function BackdropFilm({ onReady, onMissing }: { onReady?: () => v
       // fade the film in/out on act boundaries instead of stretching it
       back.style.opacity = win ? '1' : '0';
       portal.style.opacity = win ? '1' : '0';
+      if (pulseRef.current) pulseRef.current.style.opacity = win ? '0' : '1';
       if (!win) return;
       const [t0, t1] = win;
       const p = Math.min(1, Math.max(0, dive.actProgress));
@@ -139,11 +158,11 @@ export default function BackdropFilm({ onReady, onMissing }: { onReady?: () => v
         playsInline
         preload="none"
         poster={POSTER}
-        className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
+        className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000"
         style={{ transform: 'scale(1.18)', filter: 'blur(14px) brightness(0.55)' }}
       />
       {/* FRONT layer — the sharp frame inside the portal */}
-      <div ref={portalRef} className="absolute overflow-hidden transition-opacity duration-700" style={{ inset: '12%' }}>
+      <div ref={portalRef} className="absolute overflow-hidden transition-opacity duration-1000" style={{ inset: '12%' }}>
         <video
           ref={frontRef}
           muted
@@ -152,6 +171,18 @@ export default function BackdropFilm({ onReady, onMissing }: { onReady?: () => v
           poster={POSTER}
           className="absolute inset-0 w-full h-full object-cover"
         />
+      </div>
+      {/* ambient depth-pulse: fills acts with no matching footage so the
+          screen never reads as empty — a sonar sweep on the HUD's own palette */}
+      <div ref={pulseRef} className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-1000">
+        {[0, 1, 2].map((i) => (
+          <div
+            key={i}
+            className="pulse-ring absolute w-[38vmin] h-[38vmin] rounded-full border border-brand-cyan/40"
+            style={{ opacity: 0 }}
+          />
+        ))}
+        <div className="absolute w-2 h-2 rounded-full bg-brand-cyan/70 shadow-[0_0_24px_rgba(59,109,246,0.6)]" />
       </div>
       {/* readability grade: darker overall + a left column scrim where text lives */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/65 via-[#020617]/25 to-[#020617]/70" />
