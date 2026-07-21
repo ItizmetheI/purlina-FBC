@@ -13,6 +13,7 @@ import { dive } from '../utils/dive';
 // so scrolling pushes you INTO the frame (video inside a video).
 
 const SRC = '/world/visual.mp4';
+const BACK_SRC = '/world/visual-back.mp4'; // pre-blurred, pre-dimmed, 640x360 — baked offline so the browser never runs a live full-viewport blur() filter
 const POSTER = '/world/poster.jpg';
 
 // The film only plays where its footage MATCHES the content; elsewhere it
@@ -58,18 +59,19 @@ export default function BackdropFilm({ onReady, onMissing }: { onReady?: () => v
 
   useEffect(() => {
     reduced.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let blob: string | null = null;
-    fetch(SRC)
-      .then((r) => {
-        // dev servers SPA-fallback missing files to index.html — demand real video
-        if (!r.ok || !(r.headers.get('content-type') || '').includes('video')) throw new Error(String(r.status));
-        return r.blob();
-      })
-      .then((b) => {
-        blob = URL.createObjectURL(b);
-        // ponytail: two <video> decoders on one blob URL; canvas back-layer only if fps gate fails
-        if (backRef.current) backRef.current.src = blob;
-        if (frontRef.current) frontRef.current.src = blob;
+    let frontBlob: string | null = null;
+    let backBlob: string | null = null;
+    const asBlob = (r: Response) => {
+      // dev servers SPA-fallback missing files to index.html — demand real video
+      if (!r.ok || !(r.headers.get('content-type') || '').includes('video')) throw new Error(String(r.status));
+      return r.blob();
+    };
+    Promise.all([fetch(SRC).then(asBlob), fetch(BACK_SRC).then(asBlob)])
+      .then(([fb, bb]) => {
+        frontBlob = URL.createObjectURL(fb);
+        backBlob = URL.createObjectURL(bb);
+        if (frontRef.current) frontRef.current.src = frontBlob;
+        if (backRef.current) backRef.current.src = backBlob;
         onReady?.();
       })
       .catch(() => {
@@ -142,7 +144,8 @@ export default function BackdropFilm({ onReady, onMissing }: { onReady?: () => v
     raf = requestAnimationFrame(tick);
     return () => {
       cancelAnimationFrame(raf);
-      if (blob) URL.revokeObjectURL(blob);
+      if (frontBlob) URL.revokeObjectURL(frontBlob);
+      if (backBlob) URL.revokeObjectURL(backBlob);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -159,7 +162,7 @@ export default function BackdropFilm({ onReady, onMissing }: { onReady?: () => v
         preload="none"
         poster={POSTER}
         className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000"
-        style={{ transform: 'scale(1.18)', filter: 'blur(14px) brightness(0.55)' }}
+        style={{ transform: 'scale(1.06)' }}
       />
       {/* FRONT layer — the sharp frame inside the portal */}
       <div ref={portalRef} className="absolute overflow-hidden transition-opacity duration-1000" style={{ inset: '12%' }}>

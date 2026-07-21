@@ -1,20 +1,42 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
 import { Cpu, Zap, VolumeX, Shield, Droplets, ThermometerSnowflake, Minimize2, Settings2, Activity, PowerOff, Snowflake, Fan, Factory } from 'lucide-react';
 import { useLang } from '../lib/lang';
 import SectionHeader from '../components/SectionHeader';
+import { dive } from '../utils/dive';
+
+// This beat is scroll-jacked (a horizontal card strip pinned for one full
+// act) — driven directly off dive.act/actProgress instead of framer's
+// useScroll + CSS position:sticky. Lenis's virtualized scroll doesn't
+// always leave a real native scroll event for the browser to recompute
+// sticky positioning from after a large jump (fast flinging, Page Down, a
+// nav-link scrollTo) — the pin would silently fail to register and the
+// whole section would render as empty. dive.act is a plain range check
+// re-evaluated on every Lenis tick, immune to jump size (it's how the
+// HUD/ActRail/BackdropFilm already stay in sync), so this section rides
+// the same trusted clock instead of its own fragile one.
 
 export default function Technology() {
   const { t } = useLang();
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
+  const stripRef = useRef<HTMLDivElement>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(false);
 
-  // both endpoints must share the same calc() template — framer can't interpolate
-  // "0%" -> "calc(-100% + 100vw)" (mismatched templates snap instead of animating)
-  const x = useTransform(scrollYProgress, [0, 1], ["calc(0% + 0vw)", "calc(-100% + 100vw)"]);
+  useEffect(() => {
+    let raf = 0;
+    const tick = () => {
+      raf = requestAnimationFrame(tick);
+      const isActive = dive.act === 4;
+      setActive((prev) => (prev !== isActive ? isActive : prev));
+      if (wrapRef.current) wrapRef.current.style.opacity = isActive ? '1' : '0';
+      if (stripRef.current) {
+        const p = Math.min(1, Math.max(0, dive.actProgress));
+        stripRef.current.style.transform = `translateX(calc(${-100 * p}% + ${100 * p}vw))`;
+      }
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, []);
 
   const benefits = [
     { icon: <VolumeX size={40} />, title: "Lower noise", titleTr: "Daha az gürültü" },
@@ -30,8 +52,12 @@ export default function Technology() {
   ];
 
   return (
-    <section ref={containerRef} className="relative h-[350vh] z-10 pointer-events-none overflow-x-hidden">
-      <div className="sticky top-0 h-screen flex flex-col justify-center gap-10 w-full pointer-events-auto overflow-hidden">
+    <section className="relative h-[350vh] z-10 pointer-events-none">
+      <div
+        ref={wrapRef}
+        className="fixed inset-0 z-10 flex flex-col justify-center gap-10 w-full h-screen overflow-hidden transition-opacity duration-300"
+        style={{ opacity: 0, pointerEvents: active ? 'auto' : 'none' }}
+      >
 
         {/* compact header — the whole beat must fit one pinned viewport */}
         <div className="max-w-7xl mx-auto w-full px-4 md:px-12 lg:pl-32">
@@ -76,7 +102,7 @@ export default function Technology() {
         </div>
 
         {/* the film strip: intro leads, benefits follow */}
-        <motion.div style={{ x }} className="flex gap-8 w-max px-4 md:px-12 lg:pl-32">
+        <div ref={stripRef} className="flex gap-8 w-max px-4 md:px-12 lg:pl-32">
           <div className="w-[80vw] md:w-[520px] flex-shrink-0 flex flex-col justify-center gap-5 pr-8">
             <p className="text-lg md:text-xl text-white font-light leading-relaxed">
               {t(
@@ -113,7 +139,7 @@ export default function Technology() {
               </div>
             </div>
           ))}
-        </motion.div>
+        </div>
 
       </div>
     </section>
