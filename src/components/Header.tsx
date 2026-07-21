@@ -39,19 +39,25 @@ export const NAV = [
 const EASE = (x: number) => 1 - Math.pow(1 - x, 4);
 
 // dive is a plain object, not reactive — poll for the active anchor.
+// rAF-synced, not setInterval: a timer tick lands wherever it lands
+// relative to the frame, so the highlight visibly steps a beat behind
+// the actual scroll instead of tracking it.
 function useActiveAnchor() {
   const [active, setActive] = useState('');
   useEffect(() => {
-    const id = setInterval(() => {
-      setActive(
+    let raf = 0;
+    const tick = () => {
+      raf = requestAnimationFrame(tick);
+      const next =
         dive.act === 8
           ? dive.actProgress > 0.55
             ? 'toc-applications'
             : 'toc-advantages'
-          : NAV.find((n) => n.act === dive.act)?.id ?? ''
-      );
-    }, 300);
-    return () => clearInterval(id);
+          : NAV.find((n) => n.act === dive.act)?.id ?? '';
+      setActive((prev) => (prev !== next ? next : prev));
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
   }, []);
   return active;
 }

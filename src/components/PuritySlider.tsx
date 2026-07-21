@@ -5,12 +5,14 @@ export default function PuritySlider() {
   const [sliderPosition, setSliderPosition] = useState(50);
   const containerRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
+  const rect = useRef<DOMRect | null>(null);
 
+  // measure once per drag, not on every pointermove — a rect read forces
+  // a synchronous layout reflow, and pointermove fires continuously
   const handleMove = (clientX: number) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
-    const percentage = (x / rect.width) * 100;
+    if (!rect.current) return;
+    const x = Math.max(0, Math.min(clientX - rect.current.left, rect.current.width));
+    const percentage = (x / rect.current.width) * 100;
     setSliderPosition(percentage);
   };
 
@@ -21,7 +23,9 @@ export default function PuritySlider() {
   };
 
   const onPointerDown = (e: React.PointerEvent) => {
+    if (!containerRef.current) return;
     isDragging.current = true;
+    rect.current = containerRef.current.getBoundingClientRect();
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
     handleMove(e.clientX);
   };

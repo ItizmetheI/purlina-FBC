@@ -38,13 +38,19 @@ export default function SystemHUD() {
   const barRef = useRef<HTMLDivElement>(null);
   const [act, setAct] = useState(0);
   const smoothTemp = useRef(42);
+  const lastNow = useRef(0);
 
   useEffect(() => {
     let raf: number;
     const tick = () => {
+      const now = performance.now();
+      const dt = lastNow.current ? Math.min(0.1, (now - lastNow.current) / 1000) : 1 / 60;
+      lastNow.current = now;
       const t = dive.act + dive.actProgress;
       const target = tempFor(t);
-      smoothTemp.current += (target - smoothTemp.current) * 0.06;
+      // frame-rate-independent damping — a fixed per-frame factor would
+      // approach target at different wall-clock speeds on 30/60/144Hz screens
+      smoothTemp.current += (target - smoothTemp.current) * (1 - Math.exp(-dt * 4));
       const temp = smoothTemp.current;
 
       const color = tempColor(temp);
