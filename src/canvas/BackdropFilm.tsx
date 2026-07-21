@@ -187,9 +187,11 @@ export default function BackdropFilm({ onReady, onMissing }: { onReady?: () => v
         ))}
         <div className="absolute w-2 h-2 rounded-full bg-brand-cyan/70 shadow-[0_0_24px_rgba(59,109,246,0.6)]" />
       </div>
-      {/* readability grade: darker overall + a left column scrim where text lives */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/65 via-[#020617]/25 to-[#020617]/70" />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#020617]/70 via-transparent to-[#020617]/45" />
+      {/* light overall grade only — per-text-block contrast is Cine's job
+          (a local radial backing behind each copy block), not a blanket
+          wash over the whole frame. The old full-bleed 65-70% scrim here
+          was hiding most of the video's detail everywhere, all the time. */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/30 via-transparent to-[#020617]/35" />
     </div>
   );
 }
