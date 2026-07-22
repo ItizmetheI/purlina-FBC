@@ -50,7 +50,6 @@ export default function BackdropFilm({ onReady, onMissing }: { onReady?: () => v
   const frontRef = useRef<HTMLVideoElement | null>(null);
   const rippleRef = useRef<HTMLVideoElement | null>(null);
   const rippleCanvasRef = useRef<HTMLCanvasElement | null>(null);
-  const rippleLayerRef = useRef<HTMLDivElement | null>(null);
   const portalRef = useRef<HTMLDivElement | null>(null);
   const pulseRef = useRef<HTMLDivElement | null>(null);
   const [failed, setFailed] = useState(false);
@@ -128,29 +127,40 @@ export default function BackdropFilm({ onReady, onMissing }: { onReady?: () => v
       cleanupRipple = () => window.removeEventListener('pointermove', onMove);
     }
 
-    // canvas internal resolution capped well below viewport — the ripple is
-    // only ever visible through a <200px mask circle, no reason to push full
-    // 1080p pixels through drawImage() every frame for that. Sized lazily
-    // inside the render loop (not at effect-start) because the canvas only
-    // exists in the DOM once React has committed the ripple-on state.
-    const RIPPLE_RES = 640;
+    // the canvas is physically small and follows the cursor — NOT a
+    // full-viewport element hidden behind CSS clipping. A prior version
+    // relied on clip-path to visually restrict a full-viewport low-res
+    // canvas to a small circle; if that clip ever fails to apply, the
+    // whole low-res buffer becomes visible, upscaled across the entire
+    // screen (exactly "grainy"), and filtering/drawing it every frame at
+    // full viewport size is real, needless GPU cost (exactly "laggy").
+    // Bounding the canvas itself means the worst case is a small box, never
+    // the whole screen, and per-frame cost is a few hundred px, not 1080p.
+    const BOX = 2 * MAX_R + 60;
     const ensureRippleCanvasSize = (c: HTMLCanvasElement) => {
-      const ar = window.innerWidth / window.innerHeight;
-      const targetH = Math.round(RIPPLE_RES / ar);
-      if (c.width !== RIPPLE_RES || c.height !== targetH) {
-        c.width = RIPPLE_RES;
-        c.height = targetH;
+      if (c.width !== BOX || c.height !== BOX) {
+        c.width = BOX;
+        c.height = BOX;
       }
     };
-    // object-fit: cover, replicated manually since canvas has no CSS equivalent
-    const drawCover = (ctx: CanvasRenderingContext2D, v: HTMLVideoElement, cw: number, ch: number) => {
+    // maps a viewport-space box to the matching source rect under the SAME
+    // object-fit: cover transform the back/front layers use, so the ripple
+    // shows the right neighborhood of the frame, not an arbitrary crop
+    const drawCoverWindow = (
+      ctx: CanvasRenderingContext2D,
+      v: HTMLVideoElement,
+      boxX: number, boxY: number, boxSize: number
+    ) => {
       const vw = v.videoWidth, vh = v.videoHeight;
       if (!vw || !vh) return;
-      const vr = vw / vh, cr = cw / ch;
-      let sw: number, sh: number, sx: number, sy: number;
-      if (vr > cr) { sh = vh; sw = vh * cr; sx = (vw - sw) / 2; sy = 0; }
-      else { sw = vw; sh = vw / cr; sx = 0; sy = (vh - sh) / 2; }
-      ctx.drawImage(v, sx, sy, sw, sh, 0, 0, cw, ch);
+      const vpW = window.innerWidth, vpH = window.innerHeight;
+      const coverScale = Math.max(vpW / vw, vpH / vh);
+      const offX = (vpW - vw * coverScale) / 2;
+      const offY = (vpH - vh * coverScale) / 2;
+      const srcX = (boxX - offX) / coverScale;
+      const srcY = (boxY - offY) / coverScale;
+      const srcSize = boxSize / coverScale;
+      ctx.drawImage(v, srcX, srcY, srcSize, srcSize, 0, 0, boxSize, boxSize);
     };
 
     // seek gating: only issue a new seek once the previous frame PRESENTED
@@ -192,7 +202,7 @@ export default function BackdropFilm({ onReady, onMissing }: { onReady?: () => v
       back.style.opacity = win ? '1' : '0';
       portal.style.opacity = win ? '1' : '0';
       if (pulseRef.current) pulseRef.current.style.opacity = win ? '0' : '1';
-      if (rippleLayerRef.current) rippleLayerRef.current.style.opacity = win ? '1' : '0';
+      if (rippleCanvasRef.current) rippleCanvasRef.current.style.opacity = win ? '1' : '0';
       if (!win) return;
       const [t0, t1] = win;
       const p = Math.min(1, Math.max(0, dive.actProgress));
@@ -216,25 +226,33 @@ export default function BackdropFilm({ onReady, onMissing }: { onReady?: () => v
       portal.style.borderRadius = `${40 * (1 - curP)}px`;
       portal.style.transform = `scale(${1 + 0.12 * curP})`;
 
-      if (rippleSupported.current && rippleLayerRef.current) {
+      if (rippleSupported.current && rippleCanvasRef.current) {
         seek(rippleRef.current, curT);
         targetR += (IDLE_R - targetR) * (1 - Math.exp(-dt * 0.6)); // settle back to idle when the pointer stops
         curCX += (targetCX - curCX) * (1 - Math.exp(-dt * 26)); // snappy: follows the pointer closely
         curCY += (targetCY - curCY) * (1 - Math.exp(-dt * 26));
         curR += (targetR - curR) * (1 - Math.exp(-dt * 5)); // laggy: the "push" settles like real fluid
-        const el = rippleLayerRef.current;
-        el.style.setProperty('--cx', `${curCX}px`);
-        el.style.setProperty('--cy', `${curCY}px`);
-        el.style.setProperty('--cr', `${curR}px`);
+        const canvas = rippleCanvasRef.current;
+        const boxX = curCX - BOX / 2;
+        const boxY = curCY - BOX / 2;
+        // position via transform, not React state — cheap, no re-render
+        canvas.style.transform = `translate3d(${boxX}px, ${boxY}px, 0)`;
         // draw to canvas ourselves: a CSS filter: url(#svg) applied directly
         // to a <video> is unreliable across GPU video-compositing paths —
         // canvas always goes through the normal filter pipeline
-        const canvas = rippleCanvasRef.current;
         const v = rippleRef.current;
-        if (canvas && v && v.readyState >= 2) {
+        if (v && v.readyState >= 2) {
           ensureRippleCanvasSize(canvas);
           const ctx = canvas.getContext('2d');
-          if (ctx) drawCover(ctx, v, canvas.width, canvas.height);
+          if (ctx) {
+            ctx.clearRect(0, 0, BOX, BOX);
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(BOX / 2, BOX / 2, curR, 0, Math.PI * 2);
+            ctx.clip(); // circular bound lives INSIDE the canvas, not CSS
+            drawCoverWindow(ctx, v, boxX, boxY, BOX);
+            ctx.restore();
+          }
         }
       }
     };
@@ -280,27 +298,14 @@ export default function BackdropFilm({ onReady, onMissing }: { onReady?: () => v
           {/* hidden draw source — never displayed directly, just decoded and
               sampled into the canvas below every frame */}
           <video ref={rippleRef} muted playsInline preload="none" className="hidden" />
-          <div
-            ref={rippleLayerRef}
-            className="absolute inset-0 w-full h-full transition-opacity duration-1000"
-            style={{
-              // clip-path circle, not mask-image + radial-gradient: the
-              // gradient-mask form silently rendered fully transparent in
-              // testing (likely a parse/compute failure with custom
-              // properties inside the `circle <length>` shorthand) — the
-              // hard-edge clip is far more reliably supported for exactly
-              // this "spotlight follows the cursor" pattern, and the
-              // displacement itself softens the boundary in practice
-              clipPath: 'circle(var(--cr, 70px) at var(--cx, 50%) var(--cy, 50%))',
-              WebkitClipPath: 'circle(var(--cr, 70px) at var(--cx, 50%) var(--cy, 50%))',
-            }}
-          >
-            <canvas
-              ref={rippleCanvasRef}
-              className="absolute inset-0 w-full h-full"
-              style={{ filter: 'url(#liquid-ripple)' }}
-            />
-          </div>
+          {/* small canvas, physically bounded to its own box and positioned
+              by transform each frame — never a full-viewport element, so it
+              can never visually degrade more than this one small box */}
+          <canvas
+            ref={rippleCanvasRef}
+            className="absolute top-0 left-0 transition-opacity duration-1000"
+            style={{ filter: 'url(#liquid-ripple)' }}
+          />
         </>
       )}
       {/* FRONT layer — the sharp frame inside the portal */}
