@@ -16,6 +16,8 @@ import Advantages from './sections/Advantages';
 import Applications from './sections/Applications';
 import Footer from './sections/Footer';
 import Scene from './canvas/Scene';
+import BackdropFilm from './canvas/BackdropFilm';
+import ParticleOverlay from './canvas/ParticleOverlay';
 import SmoothScroll from './components/SmoothScroll';
 import Loader from './components/Loader';
 import SystemHUD from './components/SystemHUD';
@@ -36,11 +38,8 @@ export default function App() {
   const [minTimePassed, setMinTimePassed] = useState(false);
   const [canvasReady, setCanvasReady] = useState(false);
   const [appState, setAppState] = useState<'loading' | 'ready' | 'arrived'>('loading');
-  // Real-time WebGL, not a scrubbed video: a video is a fixed sequence of
-  // pre-baked frames, so no matter how well it's encoded, motion is capped
-  // by decode speed and frame count. A rendered scene computes a fresh
-  // frame every refresh with no decode step at all, which is the only way
-  // to actually get the smooth, uncapped feel of a high-refresh-rate site.
+  // video world, WebGL as fallback if it fails to load
+  const [film, setFilm] = useState(true);
 
   useEffect(() => {
     // the dive always starts at the surface
@@ -86,7 +85,14 @@ export default function App() {
         />
 
         <div className={`transition-opacity duration-1000 ${loading ? 'opacity-0' : 'opacity-100'}`}>
-          <Scene onCreated={() => setCanvasReady(true)} isLoaded={appState === 'arrived'} />
+          {film ? (
+            <>
+              <BackdropFilm onReady={() => setCanvasReady(true)} onMissing={() => setFilm(false)} />
+              <ParticleOverlay />
+            </>
+          ) : (
+            <Scene onCreated={() => setCanvasReady(true)} isLoaded={appState === 'arrived'} />
+          )}
           <div className="relative z-10 flex flex-col pointer-events-none">
             <div data-act="0">
               <Hero />
