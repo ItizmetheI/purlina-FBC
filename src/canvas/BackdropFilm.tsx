@@ -48,10 +48,18 @@ const WIN: ([number, number] | null)[] = [
 export default function BackdropFilm({ onReady, onMissing }: { onReady?: () => void; onMissing?: () => void }) {
   const backRef = useRef<HTMLVideoElement | null>(null);
   const frontRef = useRef<HTMLVideoElement | null>(null);
+  const rippleRef = useRef<HTMLVideoElement | null>(null);
+  const rippleCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const rippleLayerRef = useRef<HTMLDivElement | null>(null);
   const portalRef = useRef<HTMLDivElement | null>(null);
   const pulseRef = useRef<HTMLDivElement | null>(null);
   const [failed, setFailed] = useState(false);
   const reduced = useRef(false);
+  // fine pointer only — no mouse to react to on touch, and it's the one
+  // extra video decode we can skip where the mobile perf budget matters most.
+  // state (not a ref) because mounting the layer needs a render to happen.
+  const [rippleOn, setRippleOn] = useState(false);
+  const rippleSupported = useRef(false);
 
   // Depth-pulse ambient: fills the acts with no matching footage (a
   // sonar-style probe sweep, on-theme with the dive HUD) so those beats
@@ -71,6 +79,8 @@ export default function BackdropFilm({ onReady, onMissing }: { onReady?: () => v
 
   useEffect(() => {
     reduced.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    rippleSupported.current = !reduced.current && window.matchMedia('(pointer: fine)').matches;
+    setRippleOn(rippleSupported.current);
     let frontBlob: string | null = null;
     let backBlob: string | null = null;
     const asBlob = (r: Response) => {
@@ -84,12 +94,64 @@ export default function BackdropFilm({ onReady, onMissing }: { onReady?: () => v
         backBlob = URL.createObjectURL(bb);
         if (frontRef.current) frontRef.current.src = frontBlob;
         if (backRef.current) backRef.current.src = backBlob;
+        // ripple layer reuses the SAME sharp source — no extra download,
+        // just another decode instance seeked in lockstep with the front layer
+        if (rippleSupported.current && rippleRef.current) rippleRef.current.src = frontBlob;
         onReady?.();
       })
       .catch(() => {
         setFailed(true);
         onMissing?.();
       });
+
+    // cursor ripple: a soft circle of the SHARP source follows the pointer,
+    // distorted by an SVG feDisplacementMap — the fluid visibly reacts to
+    // you, in real time, without faking any 3D geometry or lighting
+    let curCX = 0, curCY = 0, curR = 0;
+    let targetCX = 0, targetCY = 0, targetR = 0;
+    const IDLE_R = 70, MAX_R = 190;
+    let cleanupRipple = () => {};
+    if (rippleSupported.current) {
+      let lastMX = 0, lastMY = 0, haveLast = false;
+      const onMove = (e: PointerEvent) => {
+        targetCX = e.clientX;
+        targetCY = e.clientY;
+        if (haveLast) {
+          const dist = Math.hypot(e.clientX - lastMX, e.clientY - lastMY);
+          targetR = Math.min(MAX_R, IDLE_R + dist * 3.5);
+        }
+        lastMX = e.clientX;
+        lastMY = e.clientY;
+        haveLast = true;
+      };
+      window.addEventListener('pointermove', onMove, { passive: true });
+      cleanupRipple = () => window.removeEventListener('pointermove', onMove);
+    }
+
+    // canvas internal resolution capped well below viewport — the ripple is
+    // only ever visible through a <200px mask circle, no reason to push full
+    // 1080p pixels through drawImage() every frame for that. Sized lazily
+    // inside the render loop (not at effect-start) because the canvas only
+    // exists in the DOM once React has committed the ripple-on state.
+    const RIPPLE_RES = 640;
+    const ensureRippleCanvasSize = (c: HTMLCanvasElement) => {
+      const ar = window.innerWidth / window.innerHeight;
+      const targetH = Math.round(RIPPLE_RES / ar);
+      if (c.width !== RIPPLE_RES || c.height !== targetH) {
+        c.width = RIPPLE_RES;
+        c.height = targetH;
+      }
+    };
+    // object-fit: cover, replicated manually since canvas has no CSS equivalent
+    const drawCover = (ctx: CanvasRenderingContext2D, v: HTMLVideoElement, cw: number, ch: number) => {
+      const vw = v.videoWidth, vh = v.videoHeight;
+      if (!vw || !vh) return;
+      const vr = vw / vh, cr = cw / ch;
+      let sw: number, sh: number, sx: number, sy: number;
+      if (vr > cr) { sh = vh; sw = vh * cr; sx = (vw - sw) / 2; sy = 0; }
+      else { sw = vw; sh = vw / cr; sx = 0; sy = (vh - sh) / 2; }
+      ctx.drawImage(v, sx, sy, sw, sh, 0, 0, cw, ch);
+    };
 
     // seek gating: only issue a new seek once the previous frame PRESENTED
     // (rVFC where available) — prevents seek-queue pileup = visible stutter
@@ -130,6 +192,7 @@ export default function BackdropFilm({ onReady, onMissing }: { onReady?: () => v
       back.style.opacity = win ? '1' : '0';
       portal.style.opacity = win ? '1' : '0';
       if (pulseRef.current) pulseRef.current.style.opacity = win ? '0' : '1';
+      if (rippleLayerRef.current) rippleLayerRef.current.style.opacity = win ? '1' : '0';
       if (!win) return;
       const [t0, t1] = win;
       const p = Math.min(1, Math.max(0, dive.actProgress));
@@ -152,10 +215,33 @@ export default function BackdropFilm({ onReady, onMissing }: { onReady?: () => v
       portal.style.inset = `${12 * (1 - curP)}%`;
       portal.style.borderRadius = `${40 * (1 - curP)}px`;
       portal.style.transform = `scale(${1 + 0.12 * curP})`;
+
+      if (rippleSupported.current && rippleLayerRef.current) {
+        seek(rippleRef.current, curT);
+        targetR += (IDLE_R - targetR) * (1 - Math.exp(-dt * 0.6)); // settle back to idle when the pointer stops
+        curCX += (targetCX - curCX) * (1 - Math.exp(-dt * 26)); // snappy: follows the pointer closely
+        curCY += (targetCY - curCY) * (1 - Math.exp(-dt * 26));
+        curR += (targetR - curR) * (1 - Math.exp(-dt * 5)); // laggy: the "push" settles like real fluid
+        const el = rippleLayerRef.current;
+        el.style.setProperty('--cx', `${curCX}px`);
+        el.style.setProperty('--cy', `${curCY}px`);
+        el.style.setProperty('--cr', `${curR}px`);
+        // draw to canvas ourselves: a CSS filter: url(#svg) applied directly
+        // to a <video> is unreliable across GPU video-compositing paths —
+        // canvas always goes through the normal filter pipeline
+        const canvas = rippleCanvasRef.current;
+        const v = rippleRef.current;
+        if (canvas && v && v.readyState >= 2) {
+          ensureRippleCanvasSize(canvas);
+          const ctx = canvas.getContext('2d');
+          if (ctx) drawCover(ctx, v, canvas.width, canvas.height);
+        }
+      }
     };
     raf = requestAnimationFrame(tick);
     return () => {
       cancelAnimationFrame(raf);
+      cleanupRipple();
       if (frontBlob) URL.revokeObjectURL(frontBlob);
       if (backBlob) URL.revokeObjectURL(backBlob);
     };
@@ -176,6 +262,47 @@ export default function BackdropFilm({ onReady, onMissing }: { onReady?: () => v
         className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000"
         style={{ transform: 'scale(1.06)' }}
       />
+      {/* cursor ripple — a soft circle of the SHARP source, displaced in
+          real time by an SVG filter, following the pointer. Not a portal
+          window: a glimpse of clear, disturbed fluid wherever you touch it. */}
+      {rippleOn && (
+        <>
+          <svg width="0" height="0" aria-hidden style={{ position: 'absolute' }}>
+            <defs>
+              <filter id="liquid-ripple" x="-30%" y="-30%" width="160%" height="160%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.012 0.02" numOctaves="2" seed="7" result="noise">
+                  <animate attributeName="baseFrequency" values="0.012 0.02;0.016 0.026;0.012 0.02" dur="11s" repeatCount="indefinite" />
+                </feTurbulence>
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="42" xChannelSelector="R" yChannelSelector="G" />
+              </filter>
+            </defs>
+          </svg>
+          {/* hidden draw source — never displayed directly, just decoded and
+              sampled into the canvas below every frame */}
+          <video ref={rippleRef} muted playsInline preload="none" className="hidden" />
+          <div
+            ref={rippleLayerRef}
+            className="absolute inset-0 w-full h-full transition-opacity duration-1000"
+            style={{
+              // clip-path circle, not mask-image + radial-gradient: the
+              // gradient-mask form silently rendered fully transparent in
+              // testing (likely a parse/compute failure with custom
+              // properties inside the `circle <length>` shorthand) — the
+              // hard-edge clip is far more reliably supported for exactly
+              // this "spotlight follows the cursor" pattern, and the
+              // displacement itself softens the boundary in practice
+              clipPath: 'circle(var(--cr, 70px) at var(--cx, 50%) var(--cy, 50%))',
+              WebkitClipPath: 'circle(var(--cr, 70px) at var(--cx, 50%) var(--cy, 50%))',
+            }}
+          >
+            <canvas
+              ref={rippleCanvasRef}
+              className="absolute inset-0 w-full h-full"
+              style={{ filter: 'url(#liquid-ripple)' }}
+            />
+          </div>
+        </>
+      )}
       {/* FRONT layer — the sharp frame inside the portal */}
       <div ref={portalRef} className="absolute overflow-hidden transition-opacity duration-1000" style={{ inset: '12%' }}>
         <video
