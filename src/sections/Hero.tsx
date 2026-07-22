@@ -5,6 +5,25 @@ import { useLang } from '../lib/lang';
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
+// the hero headline is the first three seconds of the entire site — it
+// deserves more craft than the section headers that follow it, not less.
+// each word resolves in from a blur/scale independently, staggered, instead
+// of the whole line moving as one flat block.
+const HERO_WORDS = ['PURLINA', 'MATRIX', 'CORE'];
+
+function HeroWord({ word, i }: { word: string; i: number }) {
+  return (
+    <motion.span
+      initial={{ opacity: 0, y: 50, scale: 1.08, filter: 'blur(14px)' }}
+      animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+      transition={{ duration: 1.1, delay: 0.35 + i * 0.14, ease }}
+      className="inline-block mr-[0.22em]"
+    >
+      {word}
+    </motion.span>
+  );
+}
+
 export default function Hero() {
   const lenis = useLenis();
   const { t } = useLang();
@@ -35,15 +54,13 @@ export default function Hero() {
           </span>
         </motion.div>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, delay: 0.4, ease }}
-          className="text-6xl md:text-8xl lg:text-[9rem] font-display font-bold text-white tracking-tighter leading-[0.9] mb-10"
-        >
-          PURLINA <br />
-          MATRIX CORE
-        </motion.h1>
+        <h1 className="text-6xl md:text-8xl lg:text-[9rem] font-display font-bold text-white tracking-tighter leading-[0.9] mb-10">
+          <span className="block"><HeroWord word={HERO_WORDS[0]} i={0} /></span>
+          <span className="block">
+            <HeroWord word={HERO_WORDS[1]} i={1} />
+            <HeroWord word={HERO_WORDS[2]} i={2} />
+          </span>
+        </h1>
 
         <motion.p
           initial={{ opacity: 0, y: 30 }}
@@ -60,11 +77,11 @@ export default function Hero() {
           transition={{ duration: 1.2, delay: 0.8, ease }}
         >
           <Magnetic strength={0.4}>
-            <button onClick={handleExploreClick} data-cursor="hover" className="group relative px-8 py-4 border border-white/20 rounded-full overflow-hidden transition-colors hover:border-brand-cyan/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-cyan/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#020617]">
-              <div className="absolute inset-0 bg-brand-cyan/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+            <button onClick={handleExploreClick} data-cursor="primary" className="group relative px-8 py-4 border border-brand-ember/50 rounded-full overflow-hidden transition-colors hover:border-brand-ember shadow-[0_0_30px_rgba(246,162,59,0.15)] hover:shadow-[0_0_40px_rgba(246,162,59,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-ember/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#020617]">
+              <div className="absolute inset-0 bg-brand-ember/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
               <span className="relative z-10 text-white font-mono tracking-widest text-xs uppercase flex items-center gap-4">
                 {t('Dalışı Başlat', 'Begin the Dive')}
-                <div className="w-1.5 h-1.5 bg-brand-cyan rounded-full animate-pulse"></div>
+                <div className="w-1.5 h-1.5 bg-brand-ember rounded-full animate-pulse"></div>
               </span>
             </button>
           </Magnetic>

@@ -8,6 +8,11 @@
   --color-brand-light-blue: #1E3A8A;
   /* ponytail: token keeps its historical name; value is the v4 brochure royal blue */
   --color-brand-cyan: #3B6DF6;
+  /* used ONLY on the single primary action per view (hero CTA) — brand-cyan
+     is already load-bearing for links/icons/badges everywhere else, so
+     giving the one truly important button its own color is what makes it
+     read as important instead of matching every other blue accent */
+  --color-brand-ember: #F6A23B;
 }
 
 @layer base {

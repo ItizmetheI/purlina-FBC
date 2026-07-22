@@ -13,9 +13,20 @@ import { dive } from '../utils/dive';
 // rounded "portal" whose inset closes and scale grows with actProgress,
 // so scrolling pushes you INTO the frame (video inside a video).
 
-const SRC = '/world/visual.mp4';
+const SRC_HD = '/world/visual.mp4';
+const SRC_MOBILE = '/world/visual-mobile.mp4'; // 960x540, ~1/4 the bytes — served on small screens or metered/slow connections
 const BACK_SRC = '/world/visual-back.mp4'; // pre-blurred, pre-dimmed, 640x360 — baked offline so the browser never runs a live full-viewport blur() filter
 const POSTER = '/world/poster.jpg';
+
+// small screen, reduced-data mode, or a connection tier that can't afford
+// 68MB of hero video — same footage, quarter the bytes
+function pickSrc(): string {
+  if (typeof window === 'undefined') return SRC_HD;
+  const conn = (navigator as any).connection;
+  const narrow = window.matchMedia('(max-width: 768px)').matches;
+  const cheapData = conn?.saveData || ['slow-2g', '2g', '3g'].includes(conn?.effectiveType);
+  return narrow || cheapData ? SRC_MOBILE : SRC_HD;
+}
 
 // The film only plays where its footage MATCHES the content; elsewhere it
 // fades out to the engineered dark backdrop instead of stretching thin.
@@ -67,7 +78,7 @@ export default function BackdropFilm({ onReady, onMissing }: { onReady?: () => v
       if (!r.ok || !(r.headers.get('content-type') || '').includes('video')) throw new Error(String(r.status));
       return r.blob();
     };
-    Promise.all([fetch(SRC).then(asBlob), fetch(BACK_SRC).then(asBlob)])
+    Promise.all([fetch(pickSrc()).then(asBlob), fetch(BACK_SRC).then(asBlob)])
       .then(([fb, bb]) => {
         frontBlob = URL.createObjectURL(fb);
         backBlob = URL.createObjectURL(bb);

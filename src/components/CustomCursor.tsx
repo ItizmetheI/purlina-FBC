@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 export default function CustomCursor() {
-  const [cursorState, setCursorState] = useState<'default' | 'hover' | 'hidden' | 'drag' | 'scan'>('default');
+  const [cursorState, setCursorState] = useState<'default' | 'hover' | 'hidden' | 'drag' | 'scan' | 'primary' | 'external'>('default');
   const [isSupported, setIsSupported] = useState(true);
   
   const cursorX = useMotionValue(-100);
@@ -30,7 +30,10 @@ export default function CustomCursor() {
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (target.closest('[data-cursor="hover"]')) {
+      const link = target.closest('a');
+      if (target.closest('[data-cursor="primary"]')) {
+        setCursorState('primary');
+      } else if (target.closest('[data-cursor="hover"]')) {
         setCursorState('hover');
       } else if (target.closest('[data-cursor="hidden"]')) {
         setCursorState('hidden');
@@ -38,6 +41,8 @@ export default function CustomCursor() {
         setCursorState('scan');
       } else if (target.closest('[data-cursor="drag"]')) {
         setCursorState('drag');
+      } else if (link && link.target === '_blank') {
+        setCursorState('external');
       } else if (target.tagName.toLowerCase() === 'a' || target.tagName.toLowerCase() === 'button' || target.closest('a') || target.closest('button')) {
         setCursorState('hover');
       } else {
@@ -80,7 +85,19 @@ export default function CustomCursor() {
       scale: 1.5,
       backgroundColor: 'rgba(255, 255, 255, 0.2)',
       border: '2px dashed rgba(255, 255, 255, 0.8)',
-    }
+    },
+    primary: {
+      scale: 2.4,
+      backgroundColor: 'rgba(246, 162, 59, 1)',
+      border: '1px solid transparent',
+      mixBlendMode: 'normal' as const,
+    },
+    external: {
+      scale: 2,
+      backgroundColor: 'rgba(255, 255, 255, 0.05)',
+      border: '1px solid rgba(255, 255, 255, 0.6)',
+      mixBlendMode: 'normal' as const,
+    },
   };
 
   if (!isSupported) return null;
@@ -116,12 +133,21 @@ export default function CustomCursor() {
           </motion.div>
         )}
         {cursorState === 'drag' && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             className="text-white text-[8px] font-mono font-bold tracking-widest"
           >
             DRAG
+          </motion.div>
+        )}
+        {cursorState === 'external' && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="text-white text-xs font-bold"
+          >
+            ↗
           </motion.div>
         )}
       </motion.div>
