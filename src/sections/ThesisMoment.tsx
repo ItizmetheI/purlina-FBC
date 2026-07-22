@@ -1,5 +1,5 @@
-import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { motion, useMotionValue, useTransform } from 'framer-motion';
 import { useLang } from '../lib/lang';
 
 // The brochure's thesis (p6), verbatim, as the film's moment of silence.
@@ -23,10 +23,29 @@ export default function ThesisMoment() {
   const words = t(TR_LINE, EN_LINE).split(' ');
   const secondary = t(EN_LINE, TR_LINE);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end end'],
-  });
+  const scrollYProgress = useMotionValue(0);
+  const [active, setActive] = useState(false);
+
+  // sticky + framer's event-based useScroll silently stops pinning once
+  // Lenis's smoothed scroll jumps past what the browser recomputes sticky
+  // from — same fix as Technology.tsx/ThermalManagement.tsx: drive progress
+  // ourselves every frame from the container rect, render as a fixed overlay.
+  useEffect(() => {
+    let raf = 0;
+    const tick = () => {
+      raf = requestAnimationFrame(tick);
+      const el = containerRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const total = rect.height - window.innerHeight;
+      const p = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
+      scrollYProgress.set(p);
+      const inView = rect.top < window.innerHeight && rect.bottom > 0;
+      setActive((prev) => (prev !== inView ? inView : prev));
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [scrollYProgress]);
 
   const bgOpacity = useTransform(scrollYProgress, [0, 0.12, 0.88, 1], [0, 0.92, 0.92, 0]);
   const enOpacity = useTransform(scrollYProgress, [0.62, 0.74], [0, 1]);
@@ -34,7 +53,10 @@ export default function ThesisMoment() {
 
   return (
     <section ref={containerRef} className="relative h-[300vh] z-10 pointer-events-none">
-      <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
+      <div
+        className="fixed top-0 left-0 h-screen w-full flex items-center justify-center overflow-hidden transition-opacity duration-200"
+        style={{ opacity: active ? 1 : 0 }}
+      >
         {/* dim the world — the moment of silence */}
         <motion.div className="absolute inset-0 bg-[#020617]" style={{ opacity: bgOpacity }} />
         <motion.div

@@ -1,14 +1,33 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
 import { useLang } from '../lib/lang';
 
+// position:sticky + framer's event-based useScroll silently stops pinning
+// once Lenis's smoothed scroll jumps past the recompute the browser needs
+// (see Technology.tsx's note) — same fix here: a fixed overlay driven by a
+// progress value we compute ourselves every frame from the container rect.
 export default function ThermalManagement() {
   const { t } = useLang();
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
+  const containerRef = useRef<HTMLDivElement>(null);
+  const scrollYProgress = useMotionValue(0);
+  const [active, setActive] = useState(false);
+
+  useEffect(() => {
+    let raf = 0;
+    const tick = () => {
+      raf = requestAnimationFrame(tick);
+      const el = containerRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const total = rect.height - window.innerHeight;
+      const p = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
+      scrollYProgress.set(p);
+      const inView = rect.top < window.innerHeight && rect.bottom > 0;
+      setActive((prev) => (prev !== inView ? inView : prev));
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [scrollYProgress]);
 
   const opacity1 = useTransform(scrollYProgress, [0, 0.2, 0.4, 0.5], [0, 1, 1, 0]);
   const opacity2 = useTransform(scrollYProgress, [0.4, 0.5, 0.7, 0.8], [0, 1, 1, 0]);
@@ -20,7 +39,10 @@ export default function ThermalManagement() {
 
   return (
     <section ref={containerRef} className="relative h-[300vh] z-10 pointer-events-none">
-      <div className="sticky top-0 h-screen flex flex-col items-center justify-center px-4 md:px-8 w-full pointer-events-auto overflow-hidden">
+      <div
+        className="fixed top-0 left-0 h-screen flex flex-col items-center justify-center px-4 md:px-8 w-full overflow-hidden transition-opacity duration-200"
+        style={{ opacity: active ? 1 : 0, pointerEvents: active ? 'auto' : 'none' }}
+      >
 
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           {/* Slide 1 */}

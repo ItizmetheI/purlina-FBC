@@ -187,6 +187,24 @@ export default function BackdropFilm({ onReady, onMissing }: { onReady?: () => v
           />
         ))}
         <div className="absolute w-2 h-2 rounded-full bg-brand-cyan/70 shadow-[0_0_24px_rgba(59,109,246,0.6)]" />
+        {/* flowing coolant ribbons — cheap CSS stroke-dash sweep, no JS */}
+        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+          {[
+            { d: 'M -10 30 C 25 20, 45 55, 110 35', delay: '0s' },
+            { d: 'M -10 65 C 30 75, 60 40, 110 60', delay: '2.6s' },
+            { d: 'M -10 48 C 40 30, 55 70, 110 45', delay: '5.2s' },
+          ].map((r, i) => (
+            <path
+              key={i}
+              d={r.d}
+              fill="none"
+              stroke="#3b6df6"
+              strokeWidth="0.3"
+              strokeDasharray="6 234"
+              style={{ animation: `flowRibbon 7.8s linear infinite`, animationDelay: r.delay }}
+            />
+          ))}
+        </svg>
       </div>
       {/* light overall grade only — per-text-block contrast is Cine's job
           (a local radial backing behind each copy block), not a blanket

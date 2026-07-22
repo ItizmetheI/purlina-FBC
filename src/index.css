@@ -86,3 +86,10 @@
   70% { transform: rotate(680deg); }
   100% { transform: rotate(720deg); }
 }
+
+@keyframes flowRibbon {
+  0% { stroke-dashoffset: 240; opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.6; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
