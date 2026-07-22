@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import { animate, stagger } from 'animejs';
 import { dive } from '../utils/dive';
 
-// The client's cinematic (10s, 4 scenes) scrubbed by scroll. Each act maps
-// to a time window inside the film so scene CUTS land exactly on section
-// boundaries: server hall → blade lift from the tank (brochure p8) →
-// lab vials (p11) → efficiency icons (p15).
+// Three Higgsfield-generated scenes (Kling 3.0 Pro, 1920x1080, 10s each,
+// concatenated: hall 0-10s, blade-lift 10-20s, vials 20-30s), scrubbed by
+// scroll. Each act maps to a time window inside the film so scene CUTS
+// land exactly on section boundaries: server hall -> blade lift from the
+// tank (brochure p8) -> lab vials (p11).
 //
 // DEPTH: two layers from one blob source. BACK — full-bleed, oversized,
 // blurred, always the current frame. FRONT — the sharp video inside a
@@ -17,19 +18,19 @@ const BACK_SRC = '/world/visual-back.mp4'; // pre-blurred, pre-dimmed, 640x360 �
 const POSTER = '/world/poster.jpg';
 
 // The film only plays where its footage MATCHES the content; elsewhere it
-// fades out to the engineered dark backdrop so the 10s never over-stretches.
-// scene windows (s): hall 0–2.45, blade 2.55–4.95, icons 5.05–7.45, vials 7.55–9.95
+// fades out to the engineered dark backdrop instead of stretching thin.
+// scene windows (s): hall 0-10, blade-lift 10-20, vials 20-30
 // act → [t0, t1] scrub window, or null → film hidden for that act
 const WIN: ([number, number] | null)[] = [
-  [0.0, 1.4],    // 0 surface — hall push-in behind the wordmark
-  [1.4, 2.45],   // 1 breach — hall bottoms out
+  [0.5, 5.0],    // 0 surface — hall push-in behind the wordmark
+  [5.0, 9.5],    // 1 breach — hall continues, bottoms out
   null,          // 2 descent — engineered dark (text/TOC carries it)
   null,          // 3 problem — dark; the DOM chart owns this beat
-  [2.55, 3.9],   // 4 solution — blade lifts from the fluid (p8)
-  [3.9, 4.95],   // 5 contact — lift completes, drips
-  [7.55, 8.9],   // 6 proof — cutaway + lab vials (p11)
+  [10.5, 15.5],  // 4 solution — blade lifts from the fluid (p8)
+  [15.5, 19.5],  // 5 contact — lift completes, drips
+  [20.5, 29.5],  // 6 proof — cutaway + lab vials (p11)
   null,          // 7 protocol — dark; safety datasheets need calm
-  null,          // 8 stable — dark; stat cards own it (icons scene is white)
+  null,          // 8 stable — dark; stat cards own it
   null,          // 9 sealed — dark; contact
 ];
 
